@@ -1,0 +1,67 @@
+﻿@model IEnumerable<WebApplication8.Models.UserRolesViewModel>
+
+@{
+    ViewData["Title"] = "User List";
+}
+
+<h1>@ViewData["Title"]</h1>
+<p>
+    <a asp-action="Create" asp-controller="User">Create New User</a>
+</p>
+    @if (User.IsInRole("Admin")) {
+    <h3> Admin</h3>}
+<table class="table">
+
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Nom)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Prenom)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Role)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().tel)
+            </th>
+            <th>
+                Actions
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => user.Nom)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => user.Prenom)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => user.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => user.Role)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => user.tel)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@user.UserId" class="btn btn-primary">Edit</a>
+                <a asp-action="Details" asp-route-id="@user.UserId" class="btn btn-warning">Details</a>
+                <form asp-action="Delete" method="post" style="display:inline;">
+                    <input type="hidden" name="id" value="@user.UserId" />
+                    <input type="submit" value="Delete" class="btn btn-danger" />
+                </form>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,76 @@
+﻿@model IEnumerable<WebApplication8.Models.Fournisseur>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.NomFor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Adresse)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Pays)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Mail)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tel)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Principale)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Statut)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NomFor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Adresse)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Pays)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Mail)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tel)
+            </td>
+            <td> @if (item.Principale == 1)
+            {<span>Principale</span> }
+            else
+            { <span>Non Principale</span>} </td>
+            <td> @if (item.Statut == 1)
+            {<span>Actif</span> }
+            else
+            { <span>Non Actif</span>} </td>
+            <td class="d-flex flex-row justify-content-between">
+                <a asp-action="Edit" asp-route-id="@item.CodeFiscal" class="btn btn-primary mr-2">Edit</a> 
+                <a asp-action="Details" asp-route-id="@item.CodeFiscal" class="btn btn-warning mr-2">Details</a> 
+                <form asp-action="Delete" method="post" style="display:inline;">
+                    <input type="hidden" name="id" value="@item.CodeFiscal" />
+                    <input type="submit" value="Delete" class="btn btn-danger mr-2" />
+                </form>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

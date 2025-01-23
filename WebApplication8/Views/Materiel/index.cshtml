@@ -1,0 +1,51 @@
+﻿@model IEnumerable<WebApplication8.Models.Materiel>
+
+@{
+    ViewData["Title"] = "View";
+}
+
+<h1>View</h1>
+
+<p>
+    <a asp-action="Create" asp-controller="Materiel">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.DateAffectation)</th>
+            <th>@Html.DisplayNameFor(model => model.Description)</th>
+            <th>@Html.DisplayNameFor(model => model.Type)</th>
+            <th>@Html.DisplayNameFor(model => model.Etat)</th>
+            <th>@Html.DisplayNameFor(model => model.SystemExp)</th>
+            <th>@Html.DisplayNameFor(model => model.disponibilite)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.DateAffectation)</td>
+                <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                <td>@Html.DisplayFor(modelItem => item.Type)</td>
+                <td> @if (item.Etat == 1)
+                {<span>En Marche</span> }
+                else
+                { <span>En Panne</span>} </td>
+                <td>@Html.DisplayFor(modelItem => item.SystemExp)</td>
+                <td> @if (item.disponibilite == 1)
+                {<span>Disponible</span> }
+                else if (item.disponibilite == 0)
+                { <span>Non Disponible</span>} </td>
+                <td class="d-flex flex-row justify-content-around">
+                    <a asp-action="Edit" asp-route-id="@item.IdMat" asp-controller="Materiel" class="btn btn-primary">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.IdMat" asp-controller="Materiel" class="btn btn-warning">Details</a>
+                    <form asp-action="Delete" method="post" style="display:inline;">
+                        <input type="hidden" name="id" value="@item.IdMat" />
+                        <input type="submit" value="Delete" class="btn btn-danger" />
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

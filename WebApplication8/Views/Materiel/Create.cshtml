@@ -1,0 +1,68 @@
+﻿@model WebApplication8.Models.Materiel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+<h4>Materiel</h4>
+<hr />
+@if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+{
+    <div class="alert alert-danger">
+        @ViewBag.ErrorMessage
+    </div>
+}
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="IdMat" class="control-label"></label>
+                <input asp-for="IdMat" class="form-control" />
+                <span asp-validation-for="IdMat" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateAffectation" class="control-label"></label>
+                <input asp-for="DateAffectation" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" readonly />
+                <span asp-validation-for="DateAffectation" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Type" class="control-label"></label>
+                <input asp-for="Type" class="form-control" />
+                <span asp-validation-for="Type" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="Etat" class="control-label"></label>
+                <input type="number" asp-for="Etat" class="form-control" value="1" />
+                <span asp-validation-for="Etat" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SystemExp" class="control-label"></label>
+                <input asp-for="SystemExp" class="form-control" />
+                <span asp-validation-for="SystemExp" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="disponibilite" class="control-label"></label>
+                <input asp-for="disponibilite" class="form-control" value="1" />
+                <span asp-validation-for="disponibilite" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

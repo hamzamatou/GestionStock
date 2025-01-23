@@ -1,0 +1,53 @@
+﻿@model WebApplication8.Models.Materiel
+@{
+    ViewData["Title"] = "Details";
+}
+<h1>Details</h1>
+<div>
+    <h4>Materiel</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2"> @Html.DisplayNameFor(model => model.IdMat) </dt>
+        <dd class="col-sm-10"> @Html.DisplayFor(model => model.IdMat) </dd>
+        <dt class="col-sm-2"> @Html.DisplayNameFor(model => model.DateAffectation) </dt>
+        <dd class="col-sm-10"> @Html.DisplayFor(model => model.DateAffectation) </dd>
+
+        <dt class="col-sm-2"> @Html.DisplayNameFor(model => model.Description) </dt>
+        <dd class="col-sm-10"> @Html.DisplayFor(model => model.Description) </dd>
+
+        <dt class="col-sm-2"> @Html.DisplayNameFor(model => model.Type) </dt>
+        <dd class="col-sm-10"> @Html.DisplayFor(model => model.Type) </dd>
+
+        <dt class="col-sm-2"> @Html.DisplayNameFor(model => model.Etat) </dt>
+        <dd class="col-sm-10">
+            @if (Model.Etat == 1)
+            {
+                <span>En Marche</span>
+            }
+            else
+            {
+                <span>En Panne</span>
+            }
+        </dd>
+
+        <dt class="col-sm-2"> @Html.DisplayNameFor(model => model.SystemExp) </dt>
+        <dd class="col-sm-10"> @Html.DisplayFor(model => model.SystemExp) </dd>
+
+        <dt class="col-sm-2"> @Html.DisplayNameFor(model => model.disponibilite) </dt>
+        <dd class="col-sm-10">
+            @if (Model.disponibilite == 1)
+            {
+                <sapn>Disponible</sapn>
+            }
+            else
+            {
+                <sapn>Non Disponible</sapn>
+            }
+        </dd>
+    </dl>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.IdMat" class="btn btn-primary" >Edit</a>
+</div>
