@@ -1,0 +1,45 @@
+﻿@model WebApplication8.Models.Affectation
+
+@{ Layout = null; ViewData["Title"] = "Décharge"; }
+<link rel="stylesheet" href="~/css/Decharge.css" />
+<div class="container">
+    <div class="header">
+        <div class="logo">
+            <img src="~/image/logo.png" alt="AsteelFlash Logo" />
+        </div>
+        <div class="date">
+            <p>Tunis le @DateTime.Now.ToString("dd/MM/yyyy")</p>
+        </div>
+    </div>
+    <h3 style="text-align:center;">Décharge</h3>
+    <hr />
+
+    <p>
+        Par la présente, Mr/Mme <strong>@Model.EmpAffected.Nom</strong> <strong>@Model.EmpAffected.Prenom</strong>,
+        confirme avoir reçu auprès de Mr/Mme <strong>@Model.UserAffecting.nom</strong> <strong>@Model.UserAffecting.prenom</strong> :
+    </p>
+
+    <p>
+        <strong>Un équipement de marque :</strong> <strong>@Model.Materiel.marque</strong><br />
+        <strong>Modèle :</strong> <strong>@Model.Materiel.Description</strong><br />
+        <strong>Numéro de Série :</strong> <strong>@Model.IdMat</strong>
+    </p>
+
+    <p><strong>Observations :</strong></p>
+    <p>.......................................................................................................................</p>
+
+    <div class="footer">
+        <p>Signature :</p>
+        <p>........................</p>
+    </div>
+
+    <div class="text-right no-print">
+        <button onclick="window.print()" class="btn btn-secondary">Imprimer</button>
+    </div>
+</div>
+
+<div class="no-print">
+    <a asp-action="Index" class="btn btn-primary">Retour à la liste</a>
+</div>
+
+<!-- Div pour la signature en bas à droite -->

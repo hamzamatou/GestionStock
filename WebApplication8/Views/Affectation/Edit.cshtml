@@ -1,0 +1,53 @@
+﻿@model WebApplication8.Models.Affectation
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Affectation</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="IdMat" />
+            <div class="form-group">
+                <label asp-for="IdUserAffecting" class="control-label"></label>
+                <input asp-for="IdUserAffecting" class="form-control" />
+                <span asp-validation-for="IdUserAffecting" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdEmpAffected" class="control-label"></label>
+                <input asp-for="IdEmpAffected" class="form-control" />
+                <span asp-validation-for="IdEmpAffected" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateAffectation" class="control-label"></label>
+                <input asp-for="DateAffectation" class="form-control" type="date"/>
+                <span asp-validation-for="DateAffectation" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="TypeAffectation" class="control-label"></label>
+                <select asp-for="TypeAffectation" class="form-control">
+                    <option value="Individuelle">Affectation Individuelle</option>
+                    <option value="Service">Affectation par Service</option>
+                </select>
+                <span asp-validation-for="TypeAffectation" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Enregistrer" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Retour à la liste</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,48 @@
+﻿@model WebApplication8.Models.Affectation
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Affectation</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+             Matériel
+        </dt>
+        <dd class="col-sm-10">
+            @Model.IdMat (@Model.Materiel.Description de la marque @Model.Materiel.marque)
+        </dd>
+        <dt class="col-sm-2">
+            Date d'Affectation
+        </dt>
+        <dd class="col-sm-10">
+            @Model.DateAffectation
+        </dd>
+        <dt class="col-sm-2">
+            Utilisateur Affectant
+        </dt>
+        <dd class="col-sm-10">
+           @Model.UserAffecting.Email
+        </dd>
+        <dt class="col-sm-2">
+            Employé Affecté
+        </dt>
+        <dd class="col-sm-10">
+            @Model.EmpAffected.Nom @Model.EmpAffected.Prenom
+        </dd>
+        <dt class="col-sm-2">
+            Type d'Affectation
+        </dt>
+        <dd class="col-sm-10">
+            @Model.TypeAffectation
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-idMat="@Model.IdMat" asp-route-dateAffectation="@Model.DateAffectation">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

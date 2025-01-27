@@ -20,10 +20,18 @@ namespace WebApplication8.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            if (User.Identity.IsAuthenticated)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToPage("/Account/Login", new { area = "Identity" });
+            }
         }
+    
 
-        public IActionResult Privacy()
+    public IActionResult Privacy()
         {
             return View();
         }

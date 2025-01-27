@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 using WebApplication8.Models;
@@ -19,6 +20,7 @@ public class MaterielController : Controller
         var materiels = _materielService.GetMateriels();
         return View(materiels);
     }
+    [Authorize(Roles = "ResponsableStock")]
     [HttpGet]
     public IActionResult Create()
     {
@@ -71,4 +73,12 @@ public class MaterielController : Controller
     {
         return View(_materielService.GetMateriel(id));
     }
+    [HttpGet]
+    public IActionResult GetMaterielsByType(string type)
+    {
+       var materiels= _materielService.GetMaterielsByType(type);
+
+        return View("Index", materiels);
+    }
+
 }

@@ -27,7 +27,7 @@ namespace WebApplication8.Models
         [Required(ErrorMessage = "Quantité is required.")]
         [Range(0, 1, ErrorMessage = "La disponibilité doit être 0 ou 1.")]
         public int disponibilite { get; set; }
-
+        public string marque { get; set; }
         public ICollection<Affectation> Affectations { get; set; }
         public ICollection<FrsMat> FrsMats { get; set; }
     }

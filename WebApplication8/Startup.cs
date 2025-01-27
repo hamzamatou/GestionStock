@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using System.Threading.Tasks;
 using WebApplication8.Models;
 using WebApplication8.Services;
+using WebApplication8.Services.AffectationService;
 using WebApplication8.Services.FournisseurService;
 using WebApplication8.Services.MaterielService;
 using WebApplication8.Services.UserService;
@@ -45,6 +46,7 @@ namespace WebApplication8
             // Configure custom services
             services.AddScoped<Imateriel, materielService>();
             services.AddScoped<IFournisseur, fournisseurService>();
+            services.AddScoped<IAffectation, affectationService>();
             services.Configure<AuthMessageSenderOptions>(Configuration);
             services.AddScoped<IEmailSender, EmailSender>();
             services.AddScoped<IUser, userService>();

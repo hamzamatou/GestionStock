@@ -1,51 +1,113 @@
 ﻿@model IEnumerable<WebApplication8.Models.Materiel>
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
 
 @{
     ViewData["Title"] = "View";
 }
 
 <h1>View</h1>
-
+@if (User.IsInRole("ResponsableStock")) { 
 <p>
     <a asp-action="Create" asp-controller="Materiel">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>@Html.DisplayNameFor(model => model.DateAffectation)</th>
-            <th>@Html.DisplayNameFor(model => model.Description)</th>
-            <th>@Html.DisplayNameFor(model => model.Type)</th>
-            <th>@Html.DisplayNameFor(model => model.Etat)</th>
-            <th>@Html.DisplayNameFor(model => model.SystemExp)</th>
-            <th>@Html.DisplayNameFor(model => model.disponibilite)</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+}
+<div id="printableArea">
+    <h2 id="printTitle" style="display: none;">Liste des Matériels</h2>
+    <table class="table" id="materielTable">
+        <thead>
             <tr>
-                <td>@Html.DisplayFor(modelItem => item.DateAffectation)</td>
-                <td>@Html.DisplayFor(modelItem => item.Description)</td>
-                <td>@Html.DisplayFor(modelItem => item.Type)</td>
-                <td> @if (item.Etat == 1)
-                {<span>En Marche</span> }
-                else
-                { <span>En Panne</span>} </td>
-                <td>@Html.DisplayFor(modelItem => item.SystemExp)</td>
-                <td> @if (item.disponibilite == 1)
-                {<span>Disponible</span> }
-                else if (item.disponibilite == 0)
-                { <span>Non Disponible</span>} </td>
-                <td class="d-flex flex-row justify-content-around">
-                    <a asp-action="Edit" asp-route-id="@item.IdMat" asp-controller="Materiel" class="btn btn-primary">Edit</a>
-                    <a asp-action="Details" asp-route-id="@item.IdMat" asp-controller="Materiel" class="btn btn-warning">Details</a>
-                    <form asp-action="Delete" method="post" style="display:inline;">
-                        <input type="hidden" name="id" value="@item.IdMat" />
-                        <input type="submit" value="Delete" class="btn btn-danger" />
-                    </form>
-                </td>
+                <th>@Html.DisplayNameFor(model => model.DateAffectation)</th>
+                <th>@Html.DisplayNameFor(model => model.Description)</th>
+                <th>@Html.DisplayNameFor(model => model.Type)</th>
+                <th>@Html.DisplayNameFor(model => model.Etat)</th>
+                <th>@Html.DisplayNameFor(model => model.SystemExp)</th>
+                <th>@Html.DisplayNameFor(model => model.disponibilite)</th>
+                <th id="action" style="display:block;">Actions</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.DateAffectation)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Type)</td>
+                    <td>
+                        @if (item.Etat == 1)
+                        {
+                            <span>En Marche</span>
+                        }
+                        else
+                        {
+                            <span>En Panne</span>
+                        }
+                    </td>
+                    <td>@Html.DisplayFor(modelItem => item.SystemExp)</td>
+                    <td>
+                        @if (item.disponibilite == 1)
+                        {
+                            <span>Disponible</span>
+                        }
+                        else if (item.disponibilite == 0)
+                        {
+                            <span>Non Disponible</span>
+                        }
+                    </td>
+                    <td class="d-flex flex-row justify-content-around">
+                        <a asp-action="Edit" asp-route-id="@item.IdMat" asp-controller="Materiel" class="btn btn-primary">Edit</a>
+                        <a asp-action="Details" asp-route-id="@item.IdMat" asp-controller="Materiel" class="btn btn-warning">Details</a>
+                        <form asp-action="Delete" method="post" style="display:inline;">
+                            <input type="hidden" name="id" value="@item.IdMat" />
+                            <button type="submit" value="Delete" class="btn btn-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <button onclick="printTable()" class="btn btn-secondary">Imprimer</button>
+</div>
+
+<script>
+    function printTable() {
+        const originalContents = document.body.innerHTML;
+        const printTitle = document.getElementById("printTitle");
+        const actionColumn = document.getElementById("action");
+
+        actionColumn.style.display = "none";
+        printTitle.style.display = "block";
+
+        const buttons = document.querySelectorAll("button");
+        const links = document.querySelectorAll("a");
+        const buttonStates = [];
+        const linkStates = [];
+
+        buttons.forEach((button, index) => {
+            buttonStates[index] = button.style.display;
+            button.style.display = "none";
+        });
+
+        links.forEach((link, index) => {
+            linkStates[index] = link.style.display;
+            link.style.display = "none";
+        });
+
+        const printContents = document.getElementById("printableArea").innerHTML;
+        document.body.innerHTML = printContents;
+        window.print();
+        document.body.innerHTML = originalContents;
+
+        buttons.forEach((button, index) => {
+            button.style.display = buttonStates[index];
+        });
+
+        links.forEach((link, index) => {
+            link.style.display = linkStates[index];
+        });
+
+        printTitle.style.display = "none";
+        actionColumn.style.display = "block";
+    }
+</script>

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using WebApplication8.Models;
 using WebApplication8.Services.FournisseurService;
@@ -24,7 +25,7 @@ public class FournisseurController : Controller
     {
         return View();
     }
-
+    [Authorize(Roles = "ResponsableStock")]
     [HttpPost]
      public IActionResult Create(Fournisseur fournisseur)
      {

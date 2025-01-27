@@ -13,5 +13,6 @@ namespace WebApplication8.Models
         public string UserName { get; set; }
         public string Role { get; set; }
         public string tel { get; set; }
+        public string pwd { get; set; }
     }
 }

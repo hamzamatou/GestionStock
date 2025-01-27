@@ -47,23 +47,27 @@ namespace WebApplication8.Services
             // Affectation entity configuration
             modelBuilder.Entity<Affectation>()
                 .ToTable("Affectation")
-                .HasKey(a => new { a.IdUserAffecting, a.IdEmpAffected, a.IdMat }); // Composite key
+                .HasKey(a => new { a.IdUserAffecting, a.IdEmpAffected, a.IdMat })
+                ; // Composite key
 
             // Relationships within Affectation
             modelBuilder.Entity<Affectation>()
                 .HasOne(a => a.UserAffecting)
                 .WithMany(u => u.Affectations)
-                .HasForeignKey(a => a.IdUserAffecting);
+                .HasForeignKey(a => a.IdUserAffecting)
+                  .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Affectation>()
                 .HasOne(a => a.EmpAffected)
                 .WithMany(e => e.relations) // Assuming UserAffected is an Employe
-                .HasForeignKey(a => a.IdEmpAffected);
+                .HasForeignKey(a => a.IdEmpAffected)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Affectation>()
                 .HasOne(a => a.Materiel)
                 .WithMany(m => m.Affectations)
-                .HasForeignKey(a => a.IdMat);
+                .HasForeignKey(a => a.IdMat)
+                  .OnDelete(DeleteBehavior.Cascade);
 
             // FrsMat entity configuration
             modelBuilder.Entity<FrsMat>()

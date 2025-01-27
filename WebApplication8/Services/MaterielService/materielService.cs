@@ -37,6 +37,8 @@ namespace WebApplication8.Services.MaterielService
         }
         public void DeleteMat(string idMat)
         {
+            var affectations = _context.Affectations.Where(a => a.IdMat == idMat).ToList();
+            _context.Affectations.RemoveRange(affectations);
             var materiel = _context.Materiels.Find(idMat);
             if (materiel != null)
             {
@@ -70,6 +72,15 @@ namespace WebApplication8.Services.MaterielService
         public Materiel GetMateriel(string id)
         {
             return _context.Materiels.Find(id);
+        }
+        public List<Materiel> GetMaterielsByType(string type)
+        {
+            var materiels = string.IsNullOrEmpty(type)
+                ? _context.Materiels.ToList() // Tous les matériels
+                : _context.Materiels.Where(m => m.Type == type).ToList(); // Filtrer par type
+
+            return materiels;
+
         }
     }
 }
