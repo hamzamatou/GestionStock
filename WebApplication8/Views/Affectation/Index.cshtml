@@ -4,57 +4,50 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                affecter par
-            </th>
-            <th>
-                affecter à
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.First().Materiel.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.First().DateAffectation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.First().TypeAffectation)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+<h1>Liste des Affectations</h1>
+<form class="d-flex" method="get" asp-action="Search">
+    <input class="form-control me-2" type="search" name="searchTerm" placeholder="Rechercher..." aria-label="Search">
+    <button class="btn btn-outline-success" type="submit">Rechercher</button>
+</form>
+@if (!Model.Any())
+{
+    <div class="alert alert-info" role="alert">
+        Aucune affectation trouvée.
+    </div>
+}
+else
+{
+    <table class="table">
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.UserAffecting.nom)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EmpAffected.Email)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Materiel.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DateAffectation)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TypeAffectation)
-                </td>
-                <td>
-                    <a asp-controller="Affectation" asp-action="Edit" asp-route-idMat="@item.IdMat" asp-route-dateAffectation="@item.DateAffectation.ToString("yyyy-MM-dd")">Edit</a> |
-                    <a asp-controller="Affectation" asp-action="Details" asp-route-idMat="@item.IdMat" asp-route-dateAffectation="@item.DateAffectation.ToString("yyyy-MM-dd")">Details</a> |
-                    <a asp-controller="Affectation" asp-action="Delete" asp-route-idMat="@item.IdMat" asp-route-dateAffectation="@item.DateAffectation.ToString("yyyy-MM-dd")">Delete</a>
-                </td>
+                <th>affecter par</th>
+                <th>affecter à</th>
+                <th>@Html.DisplayNameFor(model => model.First().Materiel.Description)</th>
+                <th>@Html.DisplayNameFor(model => model.First().DateAffectation)</th>
+                <th>@Html.DisplayNameFor(model => model.First().TypeAffectation)</th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.UserAffecting.nom)</td>
+                    <td>@Html.DisplayFor(modelItem => item.EmpAffected.Email)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Materiel.Description)</td>
+                    <td>@Html.DisplayFor(modelItem => item.DateAffectation)</td>
+                    <td>@Html.DisplayFor(modelItem => item.TypeAffectation)</td>
+                    <td class="d-flex flex-row justify-content-between">
+                        <a asp-controller="Affectation" asp-action="Edit" asp-route-idMat="@item.IdMat" asp-route-dateAffectation="@item.DateAffectation.ToString("yyyy-MM-dd")" class="btn btn-primary">Modifier</a>
+                        <a asp-controller="Affectation" asp-action="Details" asp-route-idMat="@item.IdMat" asp-route-dateAffectation="@item.DateAffectation.ToString("yyyy-MM-dd")" class="btn btn-warning">Détails</a>
+                        <form asp-action="Delete" method="post" style="display:inline;">
+                            <input type="hidden" name="idMat" value="@item.IdMat" />
+                            <input type="hidden" name="dateAffectation" value="@item.DateAffectation.ToString("yyyy-MM-dd")" />
+                            <button type="submit" value="Delete" class="btn btn-danger">Supprimer</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

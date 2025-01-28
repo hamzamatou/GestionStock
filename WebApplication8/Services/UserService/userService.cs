@@ -70,7 +70,7 @@ namespace WebApplication8.Services.UserService
             var currentRoles = await _userManager.GetRolesAsync(user);
             await _userManager.AddToRoleAsync(user, newRole);
             // Supprimer tous les rôles existants
-            /* if (currentRoles.Any())
+            if (currentRoles.Any())
              {
                  await _userManager.RemoveFromRolesAsync(user, currentRoles);
              }
@@ -79,7 +79,7 @@ namespace WebApplication8.Services.UserService
              if (!string.IsNullOrEmpty(newRole))
              {
                  await _userManager.AddToRoleAsync(user, newRole);
-             }*/
+             }
         }
     }
 }

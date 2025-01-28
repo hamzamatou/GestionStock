@@ -2,12 +2,14 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebApplication8.Models;
 using WebApplication8.Services.AffectationService;
+using WebApplication8.Services.MaterielService;
 
 namespace WebApplication8.Controllers
 {
@@ -17,10 +19,13 @@ namespace WebApplication8.Controllers
     {
         private readonly IAffectation _affectationService;
         private readonly UserManager <User> _userManager;
-        public AffectationController(IAffectation affectationService , UserManager<User> userManager)
+        private readonly Imateriel _materielService;
+        public AffectationController(IAffectation affectationService, UserManager<User> userManager, Imateriel materielService)
         {
+
             _affectationService = affectationService;
             _userManager = userManager;
+            _materielService = materielService;
         }
         // GET: HomeController1
         public ActionResult Index()
@@ -38,7 +43,13 @@ namespace WebApplication8.Controllers
         // GET: HomeController1/Create
         public ActionResult Create()
         {
+            ViewBag.AvailableMaterials = _materielService.GetMaterielsDisponibles().Select(m => new SelectListItem
+            {
+                Value = m.IdMat,
+                Text = m.Description
+            });
             return View();
+
         }
 
         // POST: HomeController1/Create
@@ -52,6 +63,7 @@ namespace WebApplication8.Controllers
                 {
                     affectation.IdUserAffecting = user.Id;
                     _affectationService.Create(affectation);
+                  
                     return RedirectToAction("Decharge",new { idMat=affectation.IdMat,dateAffectation=affectation.DateAffectation.ToString("yyyy-MM-dd") });
                 }
                 else
@@ -60,6 +72,7 @@ namespace WebApplication8.Controllers
                     ModelState.AddModelError("", "Utilisateur non trouvé.");
                 }
             }
+           
             return View(affectation);
         }
 
@@ -111,16 +124,19 @@ namespace WebApplication8.Controllers
         // POST: HomeController1/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(string idMat, DateTime dateAffectation)
         {
-            try
+            _affectationService.DeleteAffectation(idMat, dateAffectation);
+            return RedirectToAction(nameof(Index));
+        }
+        public IActionResult Search(string searchTerm)
+        {
+            var affectations = _affectationService.SearchAffectations(searchTerm);
+            if (!affectations.Any())
             {
-                return RedirectToAction(nameof(Index));
+                ViewData["NoResults"] = "Aucun résultat trouvé.";
             }
-            catch
-            {
-                return View();
-            }
+            return View("Index", affectations);
         }
     }
 }

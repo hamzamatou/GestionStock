@@ -114,7 +114,7 @@ namespace WebApplication8.Controllers
             var roles = await _roleManager.Roles.Where(r => r.Name != "Admin")
          .Select(r => new SelectListItem
          {
-             Value = r.Id.ToString(),
+             Value = r.Name,
              Text = r.Name
          }).ToListAsync();
             ViewBag.Roles = new SelectList(roles, "Value", "Text");
@@ -141,7 +141,7 @@ namespace WebApplication8.Controllers
                     user.prenom = userView.Prenom;
                     user.UserName = userView.UserName;
                     user.PhoneNumber = userView.tel;
-                    user.RoleId = userView.Role;
+                    //user.RoleId = userView.Role;
                     await _userService.UpdateUserAsync(user);
                     await _userService.UpdateUserRolesAsync(user, userView.Role);
                     return RedirectToAction("Index");

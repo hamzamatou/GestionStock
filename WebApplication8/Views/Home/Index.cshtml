@@ -1,8 +1,199 @@
-﻿@{
+﻿@model WebApplication8.Models.HomeViewModel
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+@{
     ViewData["Title"] = "Home Page";
 }
+<style>
+    .custom-height {
+        height: 150px; /* Ajustez cette valeur selon vos besoins */
+    }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<section class="content">
+    <div class="container-fluid">
+        <!-- Statistiques principales -->
+        <br />
+        <br />
+        <div class="row">
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-info">
+                    <div class="inner">
+                        <h3>@(Model.Materials.Count(m => m.disponibilite == 1))/@Model.Materials.Count()</h3>
+                        <p>Disponible/Totale</p> <p>Materiels</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-bag"></i>
+                    </div>
+                    <a asp-controller="Materiel" asp-action="GetMaterielsDisponibles" class="small-box-footer">Plus d'info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-success">
+                    <div class="inner">
+                        <h3>@(Model.Affectations.Count)</h3>
+                        <p>Nombre Totale</p>
+                        <p>D'Affectations </p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-stats-bars"></i>
+                    </div>
+                    <a asp-controller="Affectation" asp-action="Index" class="small-box-footer">Plus d'info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-warning">
+                    <div class="inner">
+                        <h3>@Model.Suppliers.Count(f => f.Principale==1)/@Model.Suppliers.Count</h3>
+                        <p> Principale/totale</p>
+                        <p>Fournisseurs</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-person"></i>
+                    </div>
+                    <a asp-controller="Fournisseur" asp-action="Index" class="small-box-footer">Plus d'info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-secondary">
+                    <div class="inner">
+                        <h3>@(Model.Users.Count)</h3>
+                        <p>@UserManager.GetRolesAsync(UserManager.GetUserAsync(User).Result).Result.FirstOrDefault()</p>
+                        <p>Utilisateurs Système</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-person"></i>
+                    </div>
+                    <a asp-controller="" asp-action="Index" class="small-box-footer">Plus d'info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+        </div>
+        <!-- Graphiques -->
+        <div class="row d-flex justify-content-around">
+            <!-- Matériels disponibles / Nombre total -->
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-chart-pie mr-1"></i>
+                            Matériels (Disponibles / Total)
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="chart-materials" style="height: 300px;"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nombre de matériels affectés -->
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-chart-bar mr-1"></i>
+                            Etat Materiel
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="chart-affected" style="height: 300px;"></canvas>
+                    </div>
+                </div>
+            </div>
+            @if (User.IsInRole("Admin") || User.IsInRole("AgentIT"))
+            {
+                <!-- Affectations par Mois -->
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-chart-line mr-1"></i>
+                                Affectations par Mois
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="chart-assignments" style="height: 300px;"></canvas>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Matériels (Disponibles / Total) par type de matériel
+        var ctxMaterials = document.getElementById('chart-materials').getContext('2d');
+        var chartMaterials = new Chart(ctxMaterials, {
+            type: 'pie',
+            data: {
+                labels: ['Laptop', 'MiniPC', 'Adaptateur', 'Serveur', 'Autre'],
+                datasets: [{
+                    data: [
+                        @(Model.Materials.Count(m => m.Type == "Laptop")),
+                        @(Model.Materials.Count(m => m.Type == "MiniPC")),
+                        @(Model.Materials.Count(m => m.Type == "adaptateur")),
+                        @(Model.Materials.Count(m => m.Type == "Serveur")),
+                        @(Model.Materials.Count(m => m.Type != "Laptop" && m.Type != "MiniPC" && m.Type != "Adaptateur" && m.Type != "Serveur"))
+                    ],
+                    backgroundColor: [
+                        '#36a2eb', '#ff6384', '#ffcd56', '#4bc0c0', '#9966ff'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+
+        // Matériels affectés
+        var ctxAffected = document.getElementById('chart-affected').getContext('2d');
+        var chartAffected = new Chart(ctxAffected, {
+            type: 'bar',
+            data: {
+                labels: ['en marche', 'en panne '],
+                datasets: [{
+                    label: 'état du materiel',
+                    data: [@(Model.Materials.Count(m => m.Etat == 1)), @(Model.Materials.Count(m => m.Etat == 0))],
+                    backgroundColor: ['#28a745', '#dc3545']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+
+        // Affectations par Mois
+        var ctxAssignments = document.getElementById('chart-assignments').getContext('2d');
+        var chartAssignments = new Chart(ctxAssignments, {
+            type: 'line',
+            data: {
+                labels: @Html.Raw(Json.Serialize(Model.Affectations.GroupBy(a => a.DateAffectation.Month).Select(g => g.Key).ToList())), // Group by month
+                datasets: [{
+                    label: 'Nombre d\'Affectations',
+                    data: @Html.Raw(Json.Serialize(Model.Affectations.GroupBy(a => a.DateAffectation.Month).Select(g => g.Count()).ToList())), // Count by month
+                    borderColor: '#ffc107',
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        beginAtZero: true
+                    },
+                    y: {
+                        type: 'category',
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+                    }
+                }
+            }
+        });
+    });
+</script>

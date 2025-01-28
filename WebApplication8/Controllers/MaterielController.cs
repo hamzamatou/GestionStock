@@ -80,5 +80,10 @@ public class MaterielController : Controller
 
         return View("Index", materiels);
     }
+    public IActionResult GetMaterielsDisponibles()
+    {
+        var materiels = _materielService.GetMaterielsDisponibles();
+        return View("Index", materiels);
+    }
 
 }

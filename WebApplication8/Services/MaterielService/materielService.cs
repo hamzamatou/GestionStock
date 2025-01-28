@@ -82,5 +82,11 @@ namespace WebApplication8.Services.MaterielService
             return materiels;
 
         }
+
+        public List<Materiel> GetMaterielsDisponibles()
+        {
+            return _context.Materiels.Where(m => m.disponibilite == 1).ToList();
+        }
+
     }
 }

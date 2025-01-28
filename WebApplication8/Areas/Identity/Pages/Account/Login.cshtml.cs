@@ -49,6 +49,7 @@ namespace WebApplication8.Areas.Identity.Pages.Account
 
             [Required]
             [DataType(DataType.Password)]
+            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             public string Password { get; set; }
 
             [Display(Name = "Remember me?")]
@@ -97,7 +98,7 @@ namespace WebApplication8.Areas.Identity.Pages.Account
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, "Le combinaison UserName et Mot de passe est invalide.");
                     return Page();
                 }
             }

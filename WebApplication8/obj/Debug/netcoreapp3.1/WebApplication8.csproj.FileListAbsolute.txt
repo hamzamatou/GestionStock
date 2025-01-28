@@ -198,3 +198,5 @@ C:\Users\hamza\source\repos\WebApplication8\WebApplication8\obj\Debug\netcoreapp
 C:\Users\hamza\source\repos\WebApplication8\WebApplication8\obj\Debug\netcoreapp3.1\Razor\Views\Affectation\Details.cshtml.g.cs
 C:\Users\hamza\source\repos\WebApplication8\WebApplication8\obj\Debug\netcoreapp3.1\Razor\Views\Affectation\Edit.cshtml.g.cs
 C:\Users\hamza\source\repos\WebApplication8\WebApplication8\obj\Debug\netcoreapp3.1\Razor\Views\Affectation\Decharge.cshtml.g.cs
+C:\Users\hamza\source\repos\WebApplication8\WebApplication8\obj\Debug\netcoreapp3.1\Razor\Views\Employe\Index.cshtml.g.cs
+C:\Users\hamza\source\repos\WebApplication8\WebApplication8\obj\Debug\netcoreapp3.1\Razor\Views\Employe\Details.cshtml.g.cs

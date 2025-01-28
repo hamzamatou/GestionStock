@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebApplication8.Models;
 using WebApplication8.Services.MaterielService;
-
 namespace WebApplication8.Services.AffectationService
 {
     public class affectationService : IAffectation
@@ -35,7 +34,11 @@ namespace WebApplication8.Services.AffectationService
 
         public void DeleteAffectation(string idMat, DateTime dateAffectation)
         {
-            throw new NotImplementedException();
+            var materiel = _materielService.GetMateriel(idMat);
+            materiel.disponibilite = 1;
+            var affectation = GetAffectation(idMat, dateAffectation);
+            _context.Affectations.Remove(affectation);
+            _context.SaveChanges();
         }
 
         public Affectation GetAffectation(string idMat, DateTime dateAffectation)
@@ -80,7 +83,21 @@ namespace WebApplication8.Services.AffectationService
 
             return null;
         }
-    }
+        public List<Affectation> SearchAffectations(string searchTerm)
+        {
+            if (string.IsNullOrWhiteSpace(searchTerm))
+            {
+                return GetAffectations();
+            }
 
+            return _context.Affectations
+                .Include(a => a.UserAffecting)
+                .Include(a => a.EmpAffected)
+                .Include(a => a.Materiel)
+                .Where(a => a.UserAffecting.nom.Contains(searchTerm) ||
+                            a.EmpAffected.Email.Contains(searchTerm)||
+                            a.Materiel.Description.Contains(searchTerm)).ToList();
+        }
     }
-
+}
+ 

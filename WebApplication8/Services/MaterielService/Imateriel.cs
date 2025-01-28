@@ -15,5 +15,6 @@ namespace WebApplication8.Services.MaterielService
         public Task<Materiel> GetMaterielAsync(string idMat);
         public Materiel GetMateriel(string id);
         public List<Materiel> GetMaterielsByType(string type);
+        public List<Materiel> GetMaterielsDisponibles();
     }
 }

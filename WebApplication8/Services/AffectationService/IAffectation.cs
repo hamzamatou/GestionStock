@@ -14,5 +14,6 @@ namespace WebApplication8.Services.AffectationService
         public Task<Affectation> UpdateAffectationAsync( Affectation affectation);
         public Task<Affectation> GetAffectationAsync(string idMat, DateTime dateAffectation);
         public Affectation GetAffectation(string idMat, DateTime dateAffectation);
+        public List<Affectation> SearchAffectations(string searchTerm);
     }
 }
