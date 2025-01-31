@@ -1,0 +1,88 @@
+﻿@model WebApplication8.Models.MatReseau
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>MatReseau</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="IdMat" />
+            <div class="form-group">
+                <label asp-for="DateAffectation" class="control-label"></label>
+                <input asp-for="DateAffectation" class="form-control" />
+                <span asp-validation-for="DateAffectation" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Type" class="control-label"></label>
+                <input asp-for="Type" class="form-control" />
+                <span asp-validation-for="Type" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Etat" class="control-label"></label>
+                <div class="form-check">
+                    <input type="radio" asp-for="Etat" class="form-check-input" id="enMarche" value="1" />
+                    <label class="form-check-label" for="enMarche">En Marche</label>
+                </div>
+                <div class="form-check">
+                    <input type="radio" asp-for="Etat" class="form-check-input" id="enPanne" value="0" />
+                    <label class="form-check-label" for="enPanne">En Panne</label>
+                </div>
+                <span asp-validation-for="Etat" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SystemExp" class="control-label"></label>
+                <input asp-for="SystemExp" class="form-control" />
+                <span asp-validation-for="SystemExp" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="disponibilite" class="control-label"></label>
+                <div class="form-check">
+                    <input type="radio" asp-for="disponibilite" class="form-check-input" id="disponible" value="1" />
+                    <label class="form-check-label" for="disponible">Disponible</label>
+                </div>
+                <div class="form-check">
+                    <input type="radio" asp-for="disponibilite" class="form-check-input" id="nonDisponible" value="0" />
+                    <label class="form-check-label" for="nonDisponible">Non Disponible</label>
+                </div>
+                <span asp-validation-for="disponibilite" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="marque" class="control-label"></label>
+                <input asp-for="marque" class="form-control" />
+                <span asp-validation-for="marque" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AdresseMac" class="control-label"></label>
+                <input asp-for="AdresseMac" class="form-control" />
+                <span asp-validation-for="AdresseMac" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NombrePort" class="control-label"></label>
+                <input asp-for="NombrePort" class="form-control" />
+                <span asp-validation-for="NombrePort" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

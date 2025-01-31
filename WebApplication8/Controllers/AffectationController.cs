@@ -14,7 +14,6 @@ using WebApplication8.Services.MaterielService;
 namespace WebApplication8.Controllers
 {
     [Authorize(Roles = "Admin,AgentIT")]
-
     public class AffectationController : Controller
     {
         private readonly IAffectation _affectationService;

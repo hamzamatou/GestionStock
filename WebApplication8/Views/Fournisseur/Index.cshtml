@@ -5,6 +5,14 @@
 }
 
 <h1>List des Fournisseurs </h1>
+<div class="d-flex justify-content-end mb-3">
+    <form class="d-flex" method="get" asp-action="Search">
+        <input class="form-control form-control-sm" type="search" name="searchTerm" placeholder="Rechercher..." aria-label="Search">
+        <button class="btn btn-outline-success btn-sm" type="submit">
+            <i class="fas fa-search"></i>
+        </button>
+    </form>
+</div>
 @if (!Model.Any())
 {
     <div class="alert alert-info" role="alert">

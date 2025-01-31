@@ -27,10 +27,19 @@ namespace WebApplication8.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
+
                 var materials = _context.Materiels.ToList();
+                foreach (var material in materials)
+{
+                  if (material == null || material == null)
+    {
+        throw new Exception("Un élément de materials est null");
+    }
+}
                 var suppliers = _context.Fournisseurs.ToList(); // Assuming you have a Fournisseurs table
                 var affectations = _context.Affectations.ToList();
                 var users =  _userManager.Users.ToList();
+
                 var viewModel = new HomeViewModel
                 {
                     Materials = materials,

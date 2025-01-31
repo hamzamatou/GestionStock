@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -60,6 +61,21 @@ namespace WebApplication8.Services.FournisseurService
             }
             return null;
         }
+        public List<Fournisseur> SearchBySupplier(string searchTerm)
+        {
+            if (string.IsNullOrWhiteSpace(searchTerm))
+            {
+                return GetFournisseurs();
+            }
+            return _context.Fournisseurs
+                            .Where(f => f.NomFor.Contains(searchTerm) ||
+                            f.CodeFiscal.Contains(searchTerm) ||
+                            f.Adresse.Contains(searchTerm) ||
+                            f.Pays.Contains(searchTerm) ||
+                            f.Mail.Contains(searchTerm) ||
+                            f.Tel.Contains(searchTerm)).ToList();
+        }
+
 
     }
 }

@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using WebApplication8.Models;
+using WebApplication8.Services;
 
 namespace WebApplication8.Areas.Identity.Pages.Account
 {
@@ -18,12 +19,12 @@ namespace WebApplication8.Areas.Identity.Pages.Account
     public class ForgotPasswordModel : PageModel
     {
         private readonly UserManager<User> _userManager;
-        private readonly IEmailSender _emailSender;
+        private readonly IMail _mail;
 
-        public ForgotPasswordModel(UserManager<User> userManager, IEmailSender emailSender)
+        public ForgotPasswordModel(UserManager<User> userManager, IMail mail)
         {
             _userManager = userManager;
-            _emailSender = emailSender;
+            _mail = mail;
         }
 
         [BindProperty]
@@ -57,10 +58,9 @@ namespace WebApplication8.Areas.Identity.Pages.Account
                     values: new { area = "Identity", code },
                     protocol: Request.Scheme);
 
-                await _emailSender.SendEmailAsync(
-                    Input.Email,
-                    "Reset Password",
-                    $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                 _mail.Envoyer_Click (
+                   
+                    $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.", "Reset Password", Input.Email);
 
                 return RedirectToPage("./ForgotPasswordConfirmation");
             }

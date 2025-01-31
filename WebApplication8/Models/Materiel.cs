@@ -30,5 +30,6 @@ namespace WebApplication8.Models
         public string marque { get; set; }
         public ICollection<Affectation> Affectations { get; set; }
         public ICollection<FrsMat> FrsMats { get; set; }
+      
     }
 }

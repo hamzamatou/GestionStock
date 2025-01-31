@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using WebApplication8.Models;
 using WebApplication8.Services.FournisseurService;
-
+[Authorize]
 public class FournisseurController : Controller
 {
     private readonly IFournisseur _fournisseurService;
@@ -67,4 +67,10 @@ public class FournisseurController : Controller
     {
         return View(_fournisseurService.GetFournisseur(id));
     }
+    public IActionResult Search(string searchTerm)
+    {
+        var fournisseurs = _fournisseurService.SearchBySupplier(searchTerm);
+        return View("Index", fournisseurs);
+    }
+
 }

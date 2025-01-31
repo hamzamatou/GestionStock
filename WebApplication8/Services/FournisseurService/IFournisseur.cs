@@ -14,5 +14,6 @@ namespace WebApplication8.Services.FournisseurService
     public Task<Fournisseur> UpdateFournisseurAsync(Fournisseur fournisseur);
     public Task<Fournisseur> GetFournisseurAsync(string id);
     public Fournisseur GetFournisseur(string id);
+     public List<Fournisseur> SearchBySupplier(string searchTerm);
 }
 }

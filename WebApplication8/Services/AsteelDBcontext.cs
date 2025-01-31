@@ -25,12 +25,14 @@ namespace WebApplication8.Services
             modelBuilder.Entity<User>().ToTable("AspNetUsers");
             // Materiel entity configuration
             modelBuilder.Entity<Materiel>()
-                .ToTable("Materiel")
-                .HasKey(m => m.IdMat);
-            modelBuilder.Entity<User>()
-                .HasOne(u => u.Role)
-                .WithMany()
-                .HasForeignKey(u => u.RoleId);
+            .ToTable("Materiel")
+            .HasKey(m => m.IdMat);
+
+            modelBuilder.Entity<Materiel>()
+                .HasDiscriminator<string>("Discriminator")
+                .HasValue<Materiel>("Materiel")
+                .HasValue<MatReseau>("MatReseau");
+          
 
 
             // User entity configuration
@@ -98,6 +100,7 @@ namespace WebApplication8.Services
             // Ensure the base method is called
             base.OnModelCreating(modelBuilder);
         }
+        public DbSet<WebApplication8.Models.MatReseau> MatReseau { get; set; }
 
     }
 }

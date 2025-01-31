@@ -26,26 +26,27 @@ namespace WebApplication8.Areas.Identity.Pages.Account
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
         private readonly ILogger<RegisterModel> _logger;
-        private readonly IEmailSender _emailSender;
+        private readonly IMail _mail;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly AsteelDBcontext _context;  // Ajout du contexte de la base de données pour vérifier les employés
+
+
 
         public RegisterModel(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender,
+            IMail mail,
             RoleManager<IdentityRole> roleManager,
             AsteelDBcontext context)  // Ajout du contexte de la base de données pour vérifier les employés
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
-            _emailSender = emailSender;
+            _mail = mail;
             _roleManager = roleManager;
             _context = context;  // Initialisation du contexte
         }
-
         [BindProperty]
         public InputModel Input { get; set; }
 
@@ -147,8 +148,8 @@ namespace WebApplication8.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    _mail.Envoyer_Click(
+                        $"Votre Compte a été bien crée pour cela s'il vous plait confirmer la creation <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.","Gestionnaire Stock",Input.Email );
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {

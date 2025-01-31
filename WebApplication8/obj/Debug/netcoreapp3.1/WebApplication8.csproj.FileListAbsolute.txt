@@ -200,3 +200,11 @@ C:\Users\hamza\source\repos\WebApplication8\WebApplication8\obj\Debug\netcoreapp
 C:\Users\hamza\source\repos\WebApplication8\WebApplication8\obj\Debug\netcoreapp3.1\Razor\Views\Affectation\Decharge.cshtml.g.cs
 C:\Users\hamza\source\repos\WebApplication8\WebApplication8\obj\Debug\netcoreapp3.1\Razor\Views\Employe\Index.cshtml.g.cs
 C:\Users\hamza\source\repos\WebApplication8\WebApplication8\obj\Debug\netcoreapp3.1\Razor\Views\Employe\Details.cshtml.g.cs
+C:\Users\hamza\source\repos\WebApplication8\WebApplication8\obj\Debug\netcoreapp3.1\Razor\Views\MatReseau\Create.cshtml.g.cs
+C:\Users\hamza\source\repos\WebApplication8\WebApplication8\obj\Debug\netcoreapp3.1\Razor\Views\MatReseau\Details.cshtml.g.cs
+C:\Users\hamza\source\repos\WebApplication8\WebApplication8\obj\Debug\netcoreapp3.1\Razor\Views\MatReseau\Edit.cshtml.g.cs
+C:\Users\hamza\source\repos\WebApplication8\WebApplication8\bin\Debug\netcoreapp3.1\System.DirectoryServices.Protocols.dll
+C:\Users\hamza\source\repos\WebApplication8\WebApplication8\bin\Debug\netcoreapp3.1\System.Security.Principal.Windows.dll
+C:\Users\hamza\source\repos\WebApplication8\WebApplication8\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.1\System.Security.Principal.Windows.dll
+C:\Users\hamza\source\repos\WebApplication8\WebApplication8\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.1\System.Security.Principal.Windows.dll
+C:\Users\hamza\source\repos\WebApplication8\WebApplication8\bin\Debug\netcoreapp3.1\YamlDotNet.dll

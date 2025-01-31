@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ using WebApplication8.Services;
 
 namespace WebApplication8.Controllers
 {
+    [Authorize(Roles = "Admin,AgentIT")]
     public class EmployeController : Controller
     {
         private readonly AsteelDBcontext _context;

@@ -13,7 +13,6 @@ namespace WebApplication8.Models
         public string Address { get; set; }
         public DateTime datecreation   { get; set; }
         public virtual ICollection<Affectation> Affectations { get; set; }
-        public string RoleId { get; set; }
-        public virtual IdentityRole Role { get; set; }
+       
     }
 }

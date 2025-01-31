@@ -4,7 +4,7 @@ using System;
 using System.Threading.Tasks;
 using WebApplication8.Models;
 using WebApplication8.Services.MaterielService;
-
+[Authorize]
 public class MaterielController : Controller
 {
     private readonly Imateriel _materielService;
@@ -56,6 +56,10 @@ public class MaterielController : Controller
     public async Task<IActionResult> Edit( string id )
     {
        var Materiel=await _materielService.GetMaterielAsync(id);
+        if (Materiel is MatReseau)
+        {
+            return RedirectToAction("Edit", "MatReseau", new { id = Materiel.IdMat });
+        }
         return View(Materiel);
     }
     [HttpPost]
@@ -71,7 +75,12 @@ public class MaterielController : Controller
     [HttpGet]
     public IActionResult Details(string id)
     {
-        return View(_materielService.GetMateriel(id));
+        var materiel = _materielService.GetMateriel(id);
+        if(materiel is MatReseau)
+        {
+            return RedirectToAction("Details", "MatReseau", new { id = materiel.IdMat });
+        }
+        return View(materiel);
     }
     [HttpGet]
     public IActionResult GetMaterielsByType(string type)
@@ -83,6 +92,11 @@ public class MaterielController : Controller
     public IActionResult GetMaterielsDisponibles()
     {
         var materiels = _materielService.GetMaterielsDisponibles();
+        return View("Index", materiels);
+    }
+    public IActionResult Search(string searchTerm)
+    {
+        var materiels = _materielService.SearchByMaterial(searchTerm);
         return View("Index", materiels);
     }
 

@@ -25,7 +25,7 @@ namespace WebApplication8.Services.MaterielService
         public void Create(Materiel mat)
         {
             try
-            {
+            { 
                 _context.Materiels.Add(mat);
                 _context.SaveChanges();
             }
@@ -58,6 +58,12 @@ namespace WebApplication8.Services.MaterielService
                 existingMateriel.Etat = materiel.Etat;
                 existingMateriel.SystemExp = materiel.SystemExp;
                 existingMateriel.disponibilite = materiel.disponibilite;
+                if (existingMateriel is MatReseau)
+                {
+                    ((MatReseau)existingMateriel).AdresseMac = ((MatReseau)materiel).AdresseMac;
+                    ((MatReseau)existingMateriel).NombrePort = ((MatReseau)materiel).NombrePort;
+
+                }
                 await _context.SaveChangesAsync();
                 return existingMateriel;
             }
@@ -87,6 +93,19 @@ namespace WebApplication8.Services.MaterielService
         {
             return _context.Materiels.Where(m => m.disponibilite == 1).ToList();
         }
+        public List<Materiel> SearchByMaterial(string searchTerm)
+        {
+            if (string.IsNullOrWhiteSpace(searchTerm))
+            {
+                return GetMateriels();
+            }
+            return _context.Materiels
+                .Where(m => m.Description.Contains(searchTerm) ||
+                            m.Type.Contains(searchTerm) ||
+                            m.SystemExp.Contains(searchTerm) ||
+                            m.marque.Contains(searchTerm)).ToList();
+        }
+
 
     }
 }

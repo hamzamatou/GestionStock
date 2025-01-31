@@ -336,6 +336,10 @@ namespace WebApplication8.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Etat")
                         .HasColumnType("int");
 
@@ -349,9 +353,14 @@ namespace WebApplication8.Migrations
                     b.Property<int>("disponibilite")
                         .HasColumnType("int");
 
+                    b.Property<string>("marque")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("IdMat");
 
                     b.ToTable("Materiel");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Materiel");
                 });
 
             modelBuilder.Entity("WebApplication8.Models.User", b =>
@@ -378,6 +387,19 @@ namespace WebApplication8.Migrations
                     b.ToTable("AspNetUsers");
 
                     b.HasDiscriminator().HasValue("User");
+                });
+
+            modelBuilder.Entity("WebApplication8.Models.MatReseau", b =>
+                {
+                    b.HasBaseType("WebApplication8.Models.Materiel");
+
+                    b.Property<string>("AdresseMac")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("NombrePort")
+                        .HasColumnType("int");
+
+                    b.HasDiscriminator().HasValue("MatReseau");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

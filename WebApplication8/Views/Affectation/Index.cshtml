@@ -4,11 +4,17 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Liste des Affectations</h1>
-<form class="d-flex" method="get" asp-action="Search">
-    <input class="form-control me-2" type="search" name="searchTerm" placeholder="Rechercher..." aria-label="Search">
-    <button class="btn btn-outline-success" type="submit">Rechercher</button>
-</form>
+<h1 id="printTitle">Liste des Affectations</h1>
+
+<div class="d-flex justify-content-end mb-3">
+    <form class="d-flex" method="get" asp-action="Search">
+        <input class="form-control form-control-sm" type="search" name="searchTerm" placeholder="Rechercher..." aria-label="Search">
+        <button class="btn btn-outline-success btn-sm" type="submit">
+            <i class="fas fa-search"></i>
+        </button>
+    </form>
+</div>
+
 @if (!Model.Any())
 {
     <div class="alert alert-info" role="alert">
@@ -17,37 +23,85 @@
 }
 else
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>affecter par</th>
-                <th>affecter à</th>
-                <th>@Html.DisplayNameFor(model => model.First().Materiel.Description)</th>
-                <th>@Html.DisplayNameFor(model => model.First().DateAffectation)</th>
-                <th>@Html.DisplayNameFor(model => model.First().TypeAffectation)</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
+    <div id="printableArea">
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>@Html.DisplayFor(modelItem => item.UserAffecting.nom)</td>
-                    <td>@Html.DisplayFor(modelItem => item.EmpAffected.Email)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Materiel.Description)</td>
-                    <td>@Html.DisplayFor(modelItem => item.DateAffectation)</td>
-                    <td>@Html.DisplayFor(modelItem => item.TypeAffectation)</td>
-                    <td class="d-flex flex-row justify-content-between">
-                        <a asp-controller="Affectation" asp-action="Edit" asp-route-idMat="@item.IdMat" asp-route-dateAffectation="@item.DateAffectation.ToString("yyyy-MM-dd")" class="btn btn-primary">Modifier</a>
-                        <a asp-controller="Affectation" asp-action="Details" asp-route-idMat="@item.IdMat" asp-route-dateAffectation="@item.DateAffectation.ToString("yyyy-MM-dd")" class="btn btn-warning">Détails</a>
-                        <form asp-action="Delete" method="post" style="display:inline;">
-                            <input type="hidden" name="idMat" value="@item.IdMat" />
-                            <input type="hidden" name="dateAffectation" value="@item.DateAffectation.ToString("yyyy-MM-dd")" />
-                            <button type="submit" value="Delete" class="btn btn-danger">Supprimer</button>
-                        </form>
-                    </td>
+                    <th>affecter par</th>
+                    <th>affecter à</th>
+                    <th>@Html.DisplayNameFor(model => model.First().Materiel.Description)</th>
+                    <th>@Html.DisplayNameFor(model => model.First().DateAffectation)</th>
+                    <th>@Html.DisplayNameFor(model => model.First().TypeAffectation)</th>
+                    <th id="action">Actions</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.UserAffecting.nom)</td>
+                        <td>@Html.DisplayFor(modelItem => item.EmpAffected.Email)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Materiel.Description)</td>
+                        <td>@Html.DisplayFor(modelItem => item.DateAffectation)</td>
+                        <td>@Html.DisplayFor(modelItem => item.TypeAffectation)</td>
+                        <td id="action">
+                            <div class="d-flex flex-row justify-content-between">
+                                <a asp-controller="Affectation" asp-action="Edit" asp-route-idMat="@item.IdMat" asp-route-dateAffectation="@item.DateAffectation.ToString("yyyy-MM-dd")" class="btn btn-primary">Modifier</a>
+                                <a asp-controller="Affectation" asp-action="Details" asp-route-idMat="@item.IdMat" asp-route-dateAffectation="@item.DateAffectation.ToString("yyyy-MM-dd")" class="btn btn-warning">Détails</a>
+                                <form asp-action="Delete" method="post" style="display:inline;">
+                                    <input type="hidden" name="idMat" value="@item.IdMat" />
+                                    <input type="hidden" name="dateAffectation" value="@item.DateAffectation.ToString("yyyy-MM-dd")" />
+                                    <button type="submit" value="Delete" class="btn btn-danger">Supprimer</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <button onclick="printTable()" class="btn btn-secondary">Imprimer</button>
+
+    <script>
+        function printTable() {
+            const originalContents = document.body.innerHTML;
+            const printTitle = document.getElementById("printTitle");
+            const actionColumn = document.querySelectorAll("#action");
+
+            printTitle.style.display = "block";
+
+            actionColumn.forEach(column => column.style.display = "none");
+
+            const buttons = document.querySelectorAll("button");
+            const links = document.querySelectorAll("a");
+            const buttonStates = [];
+            const linkStates = [];
+
+            buttons.forEach((button, index) => {
+                buttonStates[index] = button.style.display;
+                button.style.display = "none";
+            });
+
+            links.forEach((link, index) => {
+                linkStates[index] = link.style.display;
+                link.style.display = "none";
+            });
+
+            const printContents = document.getElementById("printableArea").innerHTML;
+            document.body.innerHTML = printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+
+            buttons.forEach((button, index) => {
+                button.style.display = buttonStates[index];
+            });
+
+            links.forEach((link, index) => {
+                link.style.display = linkStates[index];
+            });
+
+            printTitle.style.display = "none";
+            actionColumn.forEach(column => column.style.display = "block");
+        }
+    </script>
 }
