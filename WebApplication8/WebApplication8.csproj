@@ -28,6 +28,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\Data\" />
     <Folder Include="wwwroot\image\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Data\all.min.css" />
   </ItemGroup>
 </Project>
