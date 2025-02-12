@@ -50,7 +50,6 @@ namespace WebApplication8.Controllers
             return View();
 
         }
-
         // POST: HomeController1/Create
         [HttpPost]
         public async Task<ActionResult> Create(Affectation affectation)

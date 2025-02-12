@@ -1,10 +1,10 @@
 ﻿@model WebApplication8.Models.Affectation
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Créer une Affectation";
 }
 
-<h1>Create</h1>
+<h1>Créer une Affectation</h1>
 
 <h4>Affectation</h4>
 <hr />
@@ -12,43 +12,49 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
             <div class="form-group" hidden>
                 <label asp-for="IdUserAffecting" class="control-label"></label>
                 <input asp-for="IdUserAffecting" class="form-control" />
                 <span asp-validation-for="IdUserAffecting" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="IdEmpAffected" class="control-label"></label>
+                <label asp-for="IdEmpAffected" class="control-label">Employé Affecté</label>
                 <input asp-for="IdEmpAffected" class="form-control" />
                 <span asp-validation-for="IdEmpAffected" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="IdMat" class="control-label"></label>
+                <label asp-for="IdMat" class="control-label">Matériel à affecter</label>
                 <select asp-for="IdMat" class="form-control" asp-items="ViewBag.AvailableMaterials"></select>
                 <span asp-validation-for="IdMat" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="DateAffectation" class="control-label"></label>
+                <label asp-for="DateAffectation" class="control-label">Date d'affectation</label>
                 <input asp-for="DateAffectation" class="form-control" type="date" value="@DateTime.Now.ToString("yyyy-MM-dd")" readonly />
                 <span asp-validation-for="DateAffectation" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="TypeAffectation" class="control-label"></label>
+                <label asp-for="TypeAffectation" class="control-label">Type d'affectation</label>
                 <select asp-for="TypeAffectation" class="form-control">
                     <option value="Individuelle">Affectation Individuelle</option>
                     <option value="Service">Affectation par Service</option>
                 </select>
                 <span asp-validation-for="TypeAffectation" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Affecter" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Retour à la liste</a>
 </div>
 
 @section Scripts {

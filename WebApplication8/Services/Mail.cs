@@ -8,22 +8,27 @@ using YamlDotNet.Core.Events;
 
 namespace WebApplication8.Services
 {
-    public class Mail:IMail
+    public class Mail : IMail
     {
-        public void Envoyer_Click(string htmlMailBody, string comment,string mailto)
+        public void Envoyer_Click(string htmlMailBody, string comment, string mailto)
         {
-            var linkedResource = new LinkedResource(@"temp\printscreen.jpg", MediaTypeNames.Image.Jpeg);
-            var htmlBody = "" + htmlMailBody + "<br><br>" + comment + "<br><hr>" + $"<img src=\"cid:{linkedResource.ContentId}\"/>";
+            // Utilisez le chemin correct pour votre image
+            var linkedResource = new LinkedResource(@"c:\Users\hamza\OneDrive\Bureau\@startuml\@startuml.png", MediaTypeNames.Image.Jpeg);
+            var htmlBody = "" + htmlMailBody + " < br><br>" + comment + "<br><hr>" + $"<img src=\"cid:{linkedResource.ContentId}\"/>";
             var alternateView = AlternateView.CreateAlternateViewFromString(htmlBody, null, MediaTypeNames.Text.Html);
             alternateView.LinkedResources.Add(linkedResource);
+
+            // Utilisez votre adresse email personnelle comme expéditeur
             var mailMessage = new MailMessage
             {
-                From = new MailAddress("Flash.Track@asteelflash.com"),
+                From = new MailAddress("hamza@gamil.com"),
                 To = { mailto },
                 Subject = "FLASHTRACK - Report",
                 AlternateViews = { alternateView }
             };
-            var smtpClient = new SmtpClient("10.200.0.209");
+
+            // Utilisez l'adresse et le port SMTP appropriés pour votre serveur local
+            var smtpClient = new SmtpClient("localhost", 25);
             smtpClient.Send(mailMessage);
         }
     }

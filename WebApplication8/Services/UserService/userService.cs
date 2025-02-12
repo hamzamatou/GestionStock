@@ -28,6 +28,18 @@ namespace WebApplication8.Services.UserService
             var user = await _userManager.FindByIdAsync(id);
             if (user != null)
             {
+                // Supprimer les rôles associés à l'utilisateur
+                var userRoles = await _userManager.GetRolesAsync(user);
+                if (userRoles.Count > 0)
+                {
+                    var resultRemoveRoles = await _userManager.RemoveFromRolesAsync(user, userRoles);
+                    if (!resultRemoveRoles.Succeeded)
+                    {
+                        throw new System.Exception("Unable to remove user roles");
+                    }
+                }
+
+                // Supprimer l'utilisateur
                 var result = await _userManager.DeleteAsync(user);
                 if (!result.Succeeded)
                 {
@@ -38,8 +50,8 @@ namespace WebApplication8.Services.UserService
             {
                 throw new System.Exception("User not found");
             }
-
         }
+
 
         public async Task<User> GetUserAsync(string id)
         {

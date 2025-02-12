@@ -135,11 +135,10 @@ namespace WebApplication8.Areas.Identity.Pages.Account
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User created a new account with password.");
 
                     // Assigner le rôle sélectionné à l'utilisateur
                     await _userManager.AddToRoleAsync(user, Input.SelectedRole);
-
+                    ModelState.AddModelError(string.Empty, "l'utilisateur est bien crée");
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(
@@ -151,15 +150,6 @@ namespace WebApplication8.Areas.Identity.Pages.Account
                     _mail.Envoyer_Click(
                         $"Votre Compte a été bien crée pour cela s'il vous plait confirmer la creation <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.","Gestionnaire Stock",Input.Email );
 
-                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
-                    {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
-                    }
-                    else
-                    {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
-                    }
                 }
                 foreach (var error in result.Errors)
                 {

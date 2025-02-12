@@ -18,7 +18,7 @@ namespace WebApplication8.Services
        public DbSet<Materiel> Materiels { get; set; }
       // public DbSet<User> Users { get; set; }
        public DbSet<Affectation> Affectations { get; set; }
-        public DbSet<FrsMat> FrsMats { get; set; }
+        public DbSet<BonDachat> BonDachats { get; set; }
         public DbSet<Fournisseur> Fournisseurs { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -72,20 +72,20 @@ namespace WebApplication8.Services
                   .OnDelete(DeleteBehavior.Cascade);
 
             // FrsMat entity configuration
-            modelBuilder.Entity<FrsMat>()
-                .ToTable("FrsMat")
-                .HasKey(fm => new { fm.IdMateriel, fm.CodeFournisseur }); // Composite key
+            modelBuilder.Entity<BonDachat>()
+               .ToTable("BonDachat")
+               .HasKey(b => b.idBonDachat);
 
             // Relationships within FrsMat
-            modelBuilder.Entity<FrsMat>()
-                .HasOne(fm => fm.Materiel)
-                .WithMany(m => m.FrsMats)
-                .HasForeignKey(fm => fm.IdMateriel);
-
-            modelBuilder.Entity<FrsMat>()
-                .HasOne(fm => fm.Fournisseur)
+            modelBuilder.Entity<BonDachat>()
+                .HasOne(b => b.Fournisseur)
                 .WithMany(f => f.FrsMats)
-                .HasForeignKey(fm => fm.CodeFournisseur);
+                .HasForeignKey(b => b.CodeFournisseur);
+
+            modelBuilder.Entity<BonDachat>()
+                .HasMany(b => b.Materiels)
+                .WithOne(m => m.BonDachat)
+                .HasForeignKey(m => m.idBonDachat);
 
             // Fournisseur entity configuration
             modelBuilder.Entity<Fournisseur>()

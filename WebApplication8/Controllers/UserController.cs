@@ -156,18 +156,12 @@ namespace WebApplication8.Controllers
 
         // POST: UserController/Delete/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Delete(string id)
         {
-            try
-            {
-                await _userService.DeleteUserAsync(id);
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+
+            await _userService.DeleteUserAsync(id);
+            return RedirectToAction(nameof(Index));
+
         }
     }
 }
