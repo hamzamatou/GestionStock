@@ -1,0 +1,44 @@
+﻿@model WebApplication8.Models.BonDentre
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>BonDentre</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="idBonDentre" class="control-label">iditifiant bon d'entré</label>
+                <input asp-for="idBonDentre" class="form-control" />
+                <span asp-validation-for="idBonDentre" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateEntree" class="control-label">La Date d'entrée</label>
+                <input asp-for="DateEntree" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" readonly />
+                <span asp-validation-for="DateEntree" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="description" class="control-label"> la description </label>
+                <input asp-for="description" class="form-control" />
+                <span asp-validation-for="description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

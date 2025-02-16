@@ -1,0 +1,110 @@
+﻿@model WebApplication8.Models.BonDentre
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<style>
+    .logo-print {
+        display: none;
+    }
+
+    .no-print-title {
+        display: block;
+    }
+
+    @@media print {
+        .logo-print {
+            display: block;
+            position: absolute;
+            top: 0;
+            right: 0;
+            text-align: right;
+        }
+
+        .no-print-title {
+            display: none;
+        }
+        .bon-entree {
+            border: 2px solid #000;
+            padding: 20px;
+            margin: 20px;
+            background-color: #f9f9f9;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            border: 1px solid #000;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        h1, h4 {
+            color: #000;
+            text-align: center;
+        }
+    }
+</style>
+
+<h1 class="no-print-title">Détails</h1>
+
+<div style="position: relative;">
+    <div class="logo-print">
+        <img src="~/image/logo.png" alt="Logo de l'entreprise" style="width: 150px; height: auto;" />
+    </div>
+
+    <div class="bon-entree">
+        <h4>BonDentre</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.DateEntree)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.DateEntree)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.description)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.description)
+            </dd>
+        </dl>
+    </div>
+
+    <h5>Listes des matériaux</h5>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>matricule</th>
+                <th>Modéle</th>
+                <th>Marque</th>
+                <th>Fournisseur</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var materiel in ViewBag.Materiels)
+            {
+                <tr>
+                    <td>@materiel.IdMat</td>
+                    <td>@materiel.Description</td>
+                    <td>@materiel.marque</td>
+                    <td>@materiel.fournisseur.NomFor</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="no-print">
+        <a asp-action="Edit" asp-route-id="@Model.idBonDentre">Edit</a> |
+        <a asp-action="Index">Back to List</a> |
+        <button onclick="window.print()" class="btn btn-secondary">Imprimer le bon d'entrée</button>
+    </div>
+</div>

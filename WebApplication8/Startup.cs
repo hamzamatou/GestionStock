@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using WebApplication8.Models;
 using WebApplication8.Services;
 using WebApplication8.Services.AffectationService;
+using WebApplication8.Services.BonDentreService;
 using WebApplication8.Services.FournisseurService;
 using WebApplication8.Services.MaterielService;
 using WebApplication8.Services.UserService;
@@ -51,6 +52,7 @@ namespace WebApplication8
             services.Configure<AuthMessageSenderOptions>(Configuration);
             services.AddScoped<IMail, Mail>();
             services.AddScoped<IUser, userService>();
+            services.AddScoped<IBonDentre, BonDentreService>();
             services.AddAuthorization();
             // Add Razor Pages (necessary for Identity UI)
             services.AddRazorPages();

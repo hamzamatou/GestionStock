@@ -1,11 +1,11 @@
 ﻿@model WebApplication8.Models.Materiel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Créer";
 }
 
-<h1>Create</h1>
-<h4>Materiel</h4>
+<h1>Créer</h1>
+<h4>Matériel</h4>
 <hr />
 @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
 {
@@ -13,7 +13,8 @@
         @ViewBag.ErrorMessage
     </div>
 }
-<a asp-controller="MatReseau" asp-action="Create"> est il un equipement réseau?
+<a asp-controller="MatReseau" asp-action="Create">
+    Est-ce un équipement réseau ?
 </a>
 <div class="row">
     <div class="col-md-4">
@@ -55,14 +56,29 @@
                 <span asp-validation-for="disponibilite" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <label asp-for="marque" class="control-label"></label>
+                <input asp-for="marque" class="form-control" />
+                <span asp-validation-for="marque" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="codefiscale" class="control-label">Fournisseur</label>
+                <select asp-for="codefiscale" class="form-control" asp-items="ViewBag.Fournisseurs"></select>
+                <span asp-validation-for="codefiscale" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="idBonDentree" class="control-label">Fournisseur</label>
+                <select asp-for="idBonDentree" class="form-control" asp-items="ViewBag.BonDentres"></select>
+                <span asp-validation-for="idBonDentree" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Créer" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Retour à la liste</a>
 </div>
 
 @section Scripts {

@@ -230,19 +230,19 @@
                         <li class="nav-item">
                             <a href="#" class="nav-link caret">
                                 <i class="nav-icon fas fa-file"></i>
-                                <p>bonDAchat <i class="right fas fa-angle-left"></i></p>
+                                <p>bon d'entré <i class="right fas fa-angle-left"></i></p>
                             </a>
                             <ul class="nested">
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="fas fa-list nav-icon"></i> Liste des BonDAchats
+                                    <a asp-controller="BonDentre" class="nav-link">
+                                        <i class="fas fa-list nav-icon"></i> Liste des Bon d'entrés
                                     </a>
                                 </li>
                                 @if (User.IsInRole("ResponsableStock"))
                                 {
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link">
-                                            <i class="fas fa-plus nav-icon"></i> Création bonDAchats
+                                        <a asp-controller="BonDentre" asp-action="Create" class="nav-link">
+                                            <i class="fas fa-plus nav-icon"></i> Création bon d'entré
                                         </a>
                                     </li>
 }

@@ -106,6 +106,15 @@ namespace WebApplication8.Services.MaterielService
                             m.marque.Contains(searchTerm)).ToList();
         }
 
+        public List<Materiel> GetMaterielsByBonDentre(string IdBonDentree)
+        {
+            return _context.Materiels
+                           .Include(m => m.BonDachat)
+                           .Include(m => m.fournisseur)
+                           .Where(m => m.idBonDentree == IdBonDentree)
+                           .ToList();
+        }
+
 
     }
 }

@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text.Encodings.Web;
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
@@ -39,32 +37,54 @@ namespace WebApplication8.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var user = await _userManager.FindByEmailAsync(Input.Email);
-                if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
-                {
-                    // Don't reveal that the user does not exist or is not confirmed
-                    return RedirectToPage("./ForgotPasswordConfirmation");
-                }
+                Console.WriteLine("Échec de la validation du formulaire.");
+                return Page();
+            }
 
-                // For more information on how to enable account confirmation and password reset please 
+            var user = await _userManager.FindByEmailAsync(Input.Email);
+            if (user == null)
+            {
+                Console.WriteLine("Utilisateur non trouvé.");
+                return RedirectToPage("./ForgotPasswordConfirmation");
+            }
+
+            if (!(await _userManager.IsEmailConfirmedAsync(user)))
+            {
+                Console.WriteLine("L'utilisateur n'a pas confirmé son email.");
+                return RedirectToPage("./ForgotPasswordConfirmation");
+            }
+
+            try
+            {
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+                Console.WriteLine($"Token généré : {code}");
+
                 code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                Console.WriteLine($"Token encodé : {code}");
+
                 var callbackUrl = Url.Page(
                     "/Account/ResetPassword",
                     pageHandler: null,
                     values: new { area = "Identity", code },
                     protocol: Request.Scheme);
 
-                 _mail.Envoyer_Click (
-                   
-                    $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.", "Reset Password", Input.Email);
+                Console.WriteLine($"URL de réinitialisation : {callbackUrl}");
 
-                return RedirectToPage("./ForgotPasswordConfirmation");
+                _mail.Envoyer_Click(
+                         $"Votre Compte a été bien crée pour notre système de gestion des équipement informatique tu peux consulter l' admininstareur sytème pour obtenir vos corrodonnées de connexion  ", "Gestionnaire Stock", Input.Email);
+
+                Console.WriteLine("Email envoyé avec succès.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erreur lors de l'envoi de l'email : {ex.Message}");
+                ModelState.AddModelError(string.Empty, "Une erreur s'est produite lors de l'envoi de l'email.");
+                return Page();
             }
 
-            return Page();
+            return RedirectToPage("./ForgotPasswordConfirmation");
         }
     }
 }

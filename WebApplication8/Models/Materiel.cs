@@ -28,10 +28,11 @@ namespace WebApplication8.Models
         [Range(0, 1, ErrorMessage = "La disponibilité doit être 0 ou 1.")]
         public int disponibilite { get; set; }
         public string marque { get; set; }
-        public string idBonDachat { get; set; }
-        public virtual BonDachat BonDachat { get; set; }
+        public string idBonDentree { get; set; }
+        public virtual BonDentre BonDachat { get; set; }
+        public string codefiscale { get; set; }
+        public Fournisseur fournisseur { get; set; }
         public ICollection<Affectation> Affectations { get; set; }
-        
-      
+    
     }
 }

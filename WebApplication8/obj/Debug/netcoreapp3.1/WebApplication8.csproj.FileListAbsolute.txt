@@ -208,3 +208,6 @@ C:\Users\hamza\source\repos\WebApplication8\WebApplication8\bin\Debug\netcoreapp
 C:\Users\hamza\source\repos\WebApplication8\WebApplication8\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.1\System.Security.Principal.Windows.dll
 C:\Users\hamza\source\repos\WebApplication8\WebApplication8\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.1\System.Security.Principal.Windows.dll
 C:\Users\hamza\source\repos\WebApplication8\WebApplication8\bin\Debug\netcoreapp3.1\YamlDotNet.dll
+C:\Users\hamza\source\repos\WebApplication8\WebApplication8\obj\Debug\netcoreapp3.1\Razor\Views\BonDentre\Index.cshtml.g.cs
+C:\Users\hamza\source\repos\WebApplication8\WebApplication8\obj\Debug\netcoreapp3.1\Razor\Views\BonDentre\Create.cshtml.g.cs
+C:\Users\hamza\source\repos\WebApplication8\WebApplication8\obj\Debug\netcoreapp3.1\Razor\Views\BonDentre\Details.cshtml.g.cs

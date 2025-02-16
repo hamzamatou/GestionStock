@@ -18,7 +18,7 @@ namespace WebApplication8.Services
        public DbSet<Materiel> Materiels { get; set; }
       // public DbSet<User> Users { get; set; }
        public DbSet<Affectation> Affectations { get; set; }
-        public DbSet<BonDachat> BonDachats { get; set; }
+        public DbSet<BonDentre> BonDentres { get; set; }
         public DbSet<Fournisseur> Fournisseurs { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -32,8 +32,10 @@ namespace WebApplication8.Services
                 .HasDiscriminator<string>("Discriminator")
                 .HasValue<Materiel>("Materiel")
                 .HasValue<MatReseau>("MatReseau");
-          
-
+            modelBuilder.Entity<Materiel>()
+          .HasOne(m => m.fournisseur)
+          .WithMany(f => f.materiel)
+          .HasForeignKey(m => m.codefiscale);
 
             // User entity configuration
             /* modelBuilder.Entity<User>()
@@ -71,21 +73,14 @@ namespace WebApplication8.Services
                 .HasForeignKey(a => a.IdMat)
                   .OnDelete(DeleteBehavior.Cascade);
 
-            // FrsMat entity configuration
-            modelBuilder.Entity<BonDachat>()
-               .ToTable("BonDachat")
-               .HasKey(b => b.idBonDachat);
+            modelBuilder.Entity<BonDentre>()
+               .ToTable("BonDentre")
+               .HasKey(b => b.idBonDentre);
 
-            // Relationships within FrsMat
-            modelBuilder.Entity<BonDachat>()
-                .HasOne(b => b.Fournisseur)
-                .WithMany(f => f.FrsMats)
-                .HasForeignKey(b => b.CodeFournisseur);
-
-            modelBuilder.Entity<BonDachat>()
+            modelBuilder.Entity<BonDentre>()
                 .HasMany(b => b.Materiels)
                 .WithOne(m => m.BonDachat)
-                .HasForeignKey(m => m.idBonDachat);
+                .HasForeignKey(m => m.idBonDentree);
 
             // Fournisseur entity configuration
             modelBuilder.Entity<Fournisseur>()

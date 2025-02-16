@@ -15,6 +15,6 @@ namespace WebApplication8.Models
         public string Tel { get; set; }
         public int Principale { get; set; }
         public int Statut { get; set; }
-        public virtual ICollection<BonDachat> FrsMats { get; set; }
+        public virtual ICollection<Materiel> materiel { get; set; }
     }
 }

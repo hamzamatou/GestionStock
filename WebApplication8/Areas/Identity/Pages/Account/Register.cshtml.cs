@@ -148,7 +148,7 @@ namespace WebApplication8.Areas.Identity.Pages.Account
                         protocol: Request.Scheme);
 
                     _mail.Envoyer_Click(
-                        $"Votre Compte a été bien crée pour cela s'il vous plait confirmer la creation <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.","Gestionnaire Stock",Input.Email );
+                        $"Votre Compte a été bien crée pour notre système de gestion des équipement informatique tu peux consulter l' admininstareur sytème pour obtenir vos corrodonnées de connexion  ","Gestionnaire Stock",Input.Email );
 
                 }
                 foreach (var error in result.Errors)
