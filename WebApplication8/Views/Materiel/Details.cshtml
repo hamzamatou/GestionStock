@@ -7,18 +7,19 @@
     <h4>Materiel</h4>
     <hr />
     <dl class="row">
-        <dt class="col-sm-2"> @Html.DisplayNameFor(model => model.IdMat) </dt>
+        <dt class="col-sm-2">Identifiant du Matériel</dt>
         <dd class="col-sm-10"> @Html.DisplayFor(model => model.IdMat) </dd>
-        <dt class="col-sm-2"> @Html.DisplayNameFor(model => model.DateAffectation) </dt>
+
+        <dt class="col-sm-2">Date d'Affectation</dt>
         <dd class="col-sm-10"> @Html.DisplayFor(model => model.DateAffectation) </dd>
 
-        <dt class="col-sm-2"> @Html.DisplayNameFor(model => model.Description) </dt>
+        <dt class="col-sm-2">Description</dt>
         <dd class="col-sm-10"> @Html.DisplayFor(model => model.Description) </dd>
 
-        <dt class="col-sm-2"> @Html.DisplayNameFor(model => model.Type) </dt>
+        <dt class="col-sm-2">Type de Matériel</dt>
         <dd class="col-sm-10"> @Html.DisplayFor(model => model.Type) </dd>
 
-        <dt class="col-sm-2"> @Html.DisplayNameFor(model => model.Etat) </dt>
+        <dt class="col-sm-2">État du Matériel</dt>
         <dd class="col-sm-10">
             @if (Model.Etat == 1)
             {
@@ -30,24 +31,37 @@
             }
         </dd>
 
-        <dt class="col-sm-2"> @Html.DisplayNameFor(model => model.SystemExp) </dt>
+        <dt class="col-sm-2">Système d'exploitation</dt>
         <dd class="col-sm-10"> @Html.DisplayFor(model => model.SystemExp) </dd>
 
-        <dt class="col-sm-2"> @Html.DisplayNameFor(model => model.disponibilite) </dt>
+        <dt class="col-sm-2">Disponibilité</dt>
         <dd class="col-sm-10">
             @if (Model.disponibilite == 1)
             {
-                <sapn>Disponible</sapn>
+                <span>Disponible</span>
             }
             else
             {
-                <sapn>Non Disponible</sapn>
+                <span>Non Disponible</span>
             }
         </dd>
+
+     
+        <dt class="col-sm-2">Marque du Matériel</dt>
+        <dd class="col-sm-10"> @Html.DisplayFor(model => model.marque) </dd>
+
+
+        <dt class="col-sm-2">Identifiant du Bon d'Entrée</dt>
+        <dd class="col-sm-10"> @Html.DisplayFor(model => model.idBonDentree) </dd>
+
+        <dt class="col-sm-2">Code Fiscal du Fournisseur</dt>
+        <dd class="col-sm-10"> @Html.DisplayFor(model => model.codefiscale) </dd>
+
+       
     </dl>
 </div>
 
 <div>
     <a asp-action="Index">Back to List</a>
-    <a asp-action="Edit" asp-route-id="@Model.IdMat" class="btn btn-primary" >Edit</a>
+    <a asp-action="Edit" asp-route-id="@Model.IdMat" class="btn btn-primary">Edit</a>
 </div>

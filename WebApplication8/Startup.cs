@@ -12,6 +12,7 @@ using WebApplication8.Models;
 using WebApplication8.Services;
 using WebApplication8.Services.AffectationService;
 using WebApplication8.Services.BonDentreService;
+using WebApplication8.Services.EmployeService;
 using WebApplication8.Services.FournisseurService;
 using WebApplication8.Services.MaterielService;
 using WebApplication8.Services.UserService;
@@ -53,8 +54,10 @@ namespace WebApplication8
             services.AddScoped<IMail, Mail>();
             services.AddScoped<IUser, userService>();
             services.AddScoped<IBonDentre, BonDentreService>();
+            services.AddScoped<IEmploye, employeService>();
             services.AddAuthorization();
             // Add Razor Pages (necessary for Identity UI)
+         
             services.AddRazorPages();
         }
 
@@ -77,6 +80,7 @@ namespace WebApplication8
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+
 
             app.UseEndpoints(endpoints =>
             {

@@ -79,13 +79,20 @@ else
                         else
                         { <span>Non Actif</span>}
                     </td>
-                    <td class="d-flex flex-row justify-content-between">
-                        <a asp-action="Edit" asp-route-id="@item.CodeFiscal" class="btn btn-primary mr-2">Modifier</a>
-                        <a asp-action="Details" asp-route-id="@item.CodeFiscal" class="btn btn-warning mr-2">Détails</a>
-                        <form asp-action="Delete" method="post" style="display:inline;">
-                            <input type="hidden" name="id" value="@item.CodeFiscal" />
-                            <input type="submit" value="Supprimer" class="btn btn-danger mr-2" />
-                        </form>
+                   <td class="d-flex flex-row justify-content-between">
+                        @if (!User.IsInRole("Agent"))
+                        {
+                            <a asp-action="Edit" asp-route-id="@item.CodeFiscal" class="btn btn-primary mr-2">Modifier</a>
+                            <a asp-action="Details" asp-route-id="@item.CodeFiscal" class="btn btn-warning mr-2">Détails</a>
+                            <form asp-action="Delete" method="post" style="display:inline;">
+                                <input type="hidden" name="id" value="@item.CodeFiscal" />
+                                <input type="submit" value="Supprimer" class="btn btn-danger mr-2" />
+                            </form>
+                        }
+                        else
+                        {
+                            <a asp-action="Details" asp-route-id="@item.CodeFiscal" class="btn btn-warning mr-2">Détails</a>
+                        }
                     </td>
                 </tr>
             }

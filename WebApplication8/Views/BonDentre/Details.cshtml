@@ -1,7 +1,7 @@
 ﻿@model WebApplication8.Models.BonDentre
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Détails";
 }
 
 <style>
@@ -25,6 +25,7 @@
         .no-print-title {
             display: none;
         }
+
         .bon-entree {
             border: 2px solid #000;
             padding: 20px;
@@ -53,7 +54,7 @@
     }
 </style>
 
-<h1 class="no-print-title">Détails</h1>
+<h1 class="no-print-title">Détails du Bon d'Entrée</h1>
 
 <div style="position: relative;">
     <div class="logo-print">
@@ -61,9 +62,15 @@
     </div>
 
     <div class="bon-entree">
-        <h4>BonDentre</h4>
+        <h4>Détails du Bon d'Entrée</h4>
         <hr />
         <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.idBonDentre)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.idBonDentre)
+            </dd>
             <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.DateEntree)
             </dt>
@@ -79,12 +86,12 @@
         </dl>
     </div>
 
-    <h5>Listes des matériaux</h5>
+    <h5 class="text-center">Liste des Matériaux</h5>
     <table class="table">
         <thead>
             <tr>
-                <th>matricule</th>
-                <th>Modéle</th>
+                <th>Matricule</th>
+                <th>Modèle</th>
                 <th>Marque</th>
                 <th>Fournisseur</th>
             </tr>
@@ -103,8 +110,8 @@
     </table>
 
     <div class="no-print">
-        <a asp-action="Edit" asp-route-id="@Model.idBonDentre">Edit</a> |
-        <a asp-action="Index">Back to List</a> |
-        <button onclick="window.print()" class="btn btn-secondary">Imprimer le bon d'entrée</button>
+        <a asp-action="Edit" asp-route-id="@Model.idBonDentre" class="btn btn-primary">Modifier</a> |
+        <a asp-action="Index">Retour à la Liste</a> |
+        <button onclick="window.print()" class="btn btn-secondary">Imprimer le Bon d'Entrée</button>
     </div>
 </div>

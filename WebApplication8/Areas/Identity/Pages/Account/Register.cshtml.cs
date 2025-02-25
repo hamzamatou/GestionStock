@@ -16,11 +16,11 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using WebApplication8.Models;
 using WebApplication8.Services;
+using WebApplication8.Services.EmployeService;
 
 namespace WebApplication8.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
-    //[Authorize(Roles ="Admin")]
     public class RegisterModel : PageModel
     {
         private readonly SignInManager<User> _signInManager;
@@ -28,9 +28,7 @@ namespace WebApplication8.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IMail _mail;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly AsteelDBcontext _context;  // Ajout du contexte de la base de données pour vérifier les employés
-
-
+        private readonly IEmploye _employeService; // Injection du service Employe
 
         public RegisterModel(
             UserManager<User> userManager,
@@ -38,15 +36,16 @@ namespace WebApplication8.Areas.Identity.Pages.Account
             ILogger<RegisterModel> logger,
             IMail mail,
             RoleManager<IdentityRole> roleManager,
-            AsteelDBcontext context)  // Ajout du contexte de la base de données pour vérifier les employés
+            IEmploye employeService)  // Ajout du service employé
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _mail = mail;
             _roleManager = roleManager;
-            _context = context;  // Initialisation du contexte
+            _employeService = employeService;  // Initialisation du service
         }
+
         [BindProperty]
         public InputModel Input { get; set; }
 
@@ -70,18 +69,18 @@ namespace WebApplication8.Areas.Identity.Pages.Account
             public string Email { get; set; }
 
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [StringLength(100, ErrorMessage = "Le {0} doit contenir au moins {2} et au maximum {1} caractères.", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            [Display(Name = "Password")]
+            [Display(Name = "Mot de passe")]
             public string Password { get; set; }
 
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Display(Name = "Confirmer le mot de passe")]
+            [Compare("Password", ErrorMessage = "Le mot de passe et la confirmation ne correspondent pas.")]
             public string ConfirmPassword { get; set; }
 
             [Required]
-            [Display(Name = "Role")]
+            [Display(Name = "Rôle")]
             public string SelectedRole { get; set; }
 
             public IEnumerable<SelectListItem> Roles { get; set; }
@@ -110,8 +109,14 @@ namespace WebApplication8.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                // Vérifier si l'utilisateur est un employé
-                //  var employe = _context.Employes.FirstOrDefault(e => e.Nom == Input.Nom && e.Prenom == Input.Prenom && e.Email == Input.Email);
+                // Vérifier si l'utilisateur est un employé enregistré
+               /* var employe = _employeService.GetEmployee(Input.Nom, Input.Prenom, Input.Email);
+
+                if (employe == null)
+                {
+                    ModelState.AddModelError(string.Empty, "L'employé n'existe pas dans le système.");
+                    return Page();
+                }*/
 
                 var user = new User
                 {
@@ -119,30 +124,22 @@ namespace WebApplication8.Areas.Identity.Pages.Account
                     Email = Input.Email,
                     nom = Input.Nom,
                     prenom = Input.Prenom,
-                    // PhoneNumber = employe?.tel
+                    //PhoneNumber = employe.tel  Assigner le téléphone de l'employé si existant
                 };
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
                 {
-                    // Assigner le rôle sélectionné à l'utilisateur
                     await _userManager.AddToRoleAsync(user, Input.SelectedRole);
 
-                    // Générer le token de confirmation d'e-mail
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
 
-                    // Créer l'URL de confirmation
-                    var callbackUrl = Url.Page(
-                        "/Account/ConfirmEmail",
-                        pageHandler: null,
-                        values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
-                        protocol: Request.Scheme);
 
                     try
                     {
-                        // Envoyer l'e-mail avec le mot de passe
+                 
                         _mail.Envoyer_Click(
                             $"Votre compte a été créé avec succès pour notre système de gestion des équipements informatiques. Voici vos informations de connexion :<br><br>" +
                             $"<strong>Login :</strong> {Input.Email}<br>" +
@@ -168,7 +165,8 @@ namespace WebApplication8.Areas.Identity.Pages.Account
                     }
                 }
             }
-
+            return LocalRedirect("~/");
+         
             // Si la validation échoue, réafficher le formulaire avec les erreurs
             Input.Roles = _roleManager.Roles
                 .Select(r => new SelectListItem

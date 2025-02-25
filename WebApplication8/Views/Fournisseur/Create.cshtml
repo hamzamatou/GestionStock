@@ -1,10 +1,10 @@
 ﻿@model WebApplication8.Models.Fournisseur
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Créer";
 }
 
-<h1>Create</h1>
+<h1>Créer</h1>
 
 <h4>Fournisseur</h4>
 <hr />
@@ -13,45 +13,45 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="CodeFiscal" class="control-label"></label>
+                <label asp-for="CodeFiscal" class="control-label">Code Fiscal</label>
                 <input asp-for="CodeFiscal" class="form-control" />
                 <span asp-validation-for="CodeFiscal" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="NomFor" class="control-label"></label>
+                <label asp-for="NomFor" class="control-label">Nom du Fournisseur</label>
                 <input asp-for="NomFor" class="form-control" />
                 <span asp-validation-for="NomFor" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Adresse" class="control-label"></label>
+                <label asp-for="Adresse" class="control-label">Adresse</label>
                 <input asp-for="Adresse" class="form-control" />
                 <span asp-validation-for="Adresse" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Pays" class="control-label"></label>
+                <label asp-for="Pays" class="control-label">Pays</label>
                 <input asp-for="Pays" class="form-control" />
                 <span asp-validation-for="Pays" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Mail" class="control-label"></label>
+                <label asp-for="Mail" class="control-label">Email</label>
                 <input asp-for="Mail" class="form-control" />
                 <span asp-validation-for="Mail" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Tel" class="control-label"></label>
+                <label asp-for="Tel" class="control-label">Numéro de Téléphone</label>
                 <input asp-for="Tel" class="form-control" />
                 <span asp-validation-for="Tel" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Principale" class="control-label"></label>
+                <label asp-for="Principale" class="control-label">Fournisseur Principal</label>
                 <div>
-                    <input type="radio" asp-for="Principale" value="1" /> Principale
-                    <input type="radio" asp-for="Principale" value="0" /> Non Principale
+                    <input type="radio" asp-for="Principale" value="1" /> Oui
+                    <input type="radio" asp-for="Principale" value="0" /> Non
                 </div>
                 <span asp-validation-for="Principale" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Statut" class="control-label"></label>
+                <label asp-for="Statut" class="control-label">Statut</label>
                 <div>
                     <input type="radio" asp-for="Statut" value="1" /> Actif
                     <input type="radio" asp-for="Statut" value="0" /> Non Actif
@@ -59,12 +59,16 @@
                 <span asp-validation-for="Statut" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Créer" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
+
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Retour à la liste</a>
 </div>
-@section Scripts { @{await Html.RenderPartialAsync("_ValidationScriptsPartial");} }
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -58,6 +58,9 @@ namespace WebApplication8.Services.MaterielService
                 existingMateriel.Etat = materiel.Etat;
                 existingMateriel.SystemExp = materiel.SystemExp;
                 existingMateriel.disponibilite = materiel.disponibilite;
+                existingMateriel.marque = materiel.marque;  
+                existingMateriel.codefiscale = materiel.codefiscale; 
+                existingMateriel.idBonDentree = materiel.idBonDentree;
                 if (existingMateriel is MatReseau)
                 {
                     ((MatReseau)existingMateriel).AdresseMac = ((MatReseau)materiel).AdresseMac;

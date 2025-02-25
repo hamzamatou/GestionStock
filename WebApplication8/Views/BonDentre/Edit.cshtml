@@ -1,35 +1,30 @@
 ﻿@model WebApplication8.Models.BonDentre
 
 @{
-    ViewData["Title"] = "Créer";
+    ViewData["Title"] = "Modifier";
 }
 
-<h1>Créer</h1>
+<h1>Modifier</h1>
 
 <h4>Bon d'Entrée</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="idBonDentre" />
             <div class="form-group">
-                <label asp-for="idBonDentre" class="control-label">Identifiant bon d'entrée</label>
-                <input asp-for="idBonDentre" class="form-control" />
-                <span asp-validation-for="idBonDentre" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DateEntree" class="control-label">Date d'entrée</label>
-                <input asp-for="DateEntree" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" readonly />
+                <label asp-for="DateEntree" class="control-label">Date d'Entrée</label>
+                <input asp-for="DateEntree" class="form-control" />
                 <span asp-validation-for="DateEntree" class="text-danger"></span>
             </div>
-
             <div class="form-group">
                 <label asp-for="description" class="control-label">Description</label>
                 <input asp-for="description" class="form-control" />
                 <span asp-validation-for="description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Créer" class="btn btn-primary" />
+                <input type="submit" value="Enregistrer" class="btn btn-primary" />
             </div>
         </form>
     </div>

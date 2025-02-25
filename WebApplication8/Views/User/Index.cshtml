@@ -8,7 +8,7 @@
 @if (!Model.Any())
 {
     <div class="alert alert-info" role="alert">
-        Aucune Utlisateur trouvée.
+        Aucun utilisateur trouvé.
     </div>
 }
 else
@@ -57,11 +57,11 @@ else
                         @Html.DisplayFor(modelItem => user.tel)
                     </td>
                     <td class="d-flex flex-row justify-content-between">
-                        <a asp-action="Edit" asp-route-id="@user.UserId" class="btn btn-primary">Edit</a>
-                        <a asp-action="Details" asp-route-id="@user.UserId" class="btn btn-warning">Details</a>
+                        <a asp-action="Edit" asp-route-id="@user.UserId" class="btn btn-primary">Modifier</a>
+                        <a asp-action="Details" asp-route-id="@user.UserId" class="btn btn-warning">Détails</a>
                         <form asp-action="Delete" method="post" style="display:inline;">
                             <input type="hidden" name="id" value="@user.UserId" />
-                            <input type="submit" value="Delete" class="btn btn-danger" />
+                            <input type="submit" value="Supprimer" class="btn btn-danger" />
                         </form>
                     </td>
                 </tr>

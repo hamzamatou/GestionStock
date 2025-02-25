@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using WebApplication8.Models;
 using WebApplication8.Services.AffectationService;
 using WebApplication8.Services.MaterielService;
+using WebApplication8.Services.EmployeService;
 
 namespace WebApplication8.Controllers
 {
@@ -17,29 +18,25 @@ namespace WebApplication8.Controllers
     public class AffectationController : Controller
     {
         private readonly IAffectation _affectationService;
-        private readonly UserManager <User> _userManager;
+        private readonly UserManager<User> _userManager;
         private readonly Imateriel _materielService;
-        public AffectationController(IAffectation affectationService, UserManager<User> userManager, Imateriel materielService)
-        {
+        private readonly IEmploye _employeService; 
 
+        public AffectationController(IAffectation affectationService, UserManager<User> userManager, Imateriel materielService, IEmploye employeService)
+        {
             _affectationService = affectationService;
             _userManager = userManager;
             _materielService = materielService;
+            _employeService = employeService; 
         }
-        // GET: HomeController1
+
+        
         public ActionResult Index()
         {
             return View(_affectationService.GetAffectations());
         }
 
-        // GET: HomeController1/Details/5
-        public async Task<ActionResult>  Details(string idMat, DateTime dateAffectation)
-        {
-            
-            return View( await _affectationService.GetAffectationAsync(idMat, dateAffectation));
-        }
-
-        // GET: HomeController1/Create
+        
         public ActionResult Create()
         {
             ViewBag.AvailableMaterials = _materielService.GetMaterielsDisponibles().Select(m => new SelectListItem
@@ -48,66 +45,37 @@ namespace WebApplication8.Controllers
                 Text = m.Description
             });
             return View();
-
         }
-        // POST: HomeController1/Create
+
+       
         [HttpPost]
         public async Task<ActionResult> Create(Affectation affectation)
         {
             if (ModelState.IsValid)
             {
-                var user = await _userManager.GetUserAsync(User);
-                if (user != null)
+               
+                var employe =  _employeService.GetEmployeById(affectation.IdEmpAffected);
+                if (employe != null) 
                 {
-                    affectation.IdUserAffecting = user.Id;
-                    _affectationService.Create(affectation);
-                  
-                    return RedirectToAction("Decharge",new { idMat=affectation.IdMat,dateAffectation=affectation.DateAffectation.ToString("yyyy-MM-dd") });
-                }
-                else
-                {
-                    // Gérer le cas où l'utilisateur n'est pas trouvé
-                    ModelState.AddModelError("", "Utilisateur non trouvé.");
-                }
-            }
+                    var user = await _userManager.GetUserAsync(User);
            
-            return View(affectation);
-        }
+                        affectation.IdUserAffecting = user.Id;
+                        _affectationService.Create(affectation);
 
-        // GET: HomeController1/Edit/5
-        public async Task<ActionResult> Edit(string idMat , DateTime dateAffectation)
-        {
-            return View(await _affectationService.GetAffectationAsync(idMat, dateAffectation));
-        }
-
-        // POST: HomeController1/Edit/5
-        [HttpPost]
-        public async Task<ActionResult> Edit(Affectation affectation)
-        {
-            if (ModelState.IsValid)
-            {
-                var updatedAffectation = await _affectationService.UpdateAffectationAsync(affectation);
-                if (updatedAffectation != null)
-                {
-                    return RedirectToAction(nameof(Index));
+                        return RedirectToAction("Decharge", new { idMat = affectation.IdMat, dateAffectation = affectation.DateAffectation.ToString("yyyy-MM-dd") });
+          
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Affectation non trouvée.");
+                    
+                    ModelState.AddModelError("", "L'employé n'existe pas.");
                 }
             }
-            else
-            {
-                ModelState.AddModelError("", "Modèle non valide.");
-            }
+
             return View(affectation);
         }
 
-        // GET: HomeController1/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
+      
         public async Task<IActionResult> Decharge(string idMat, DateTime dateAffectation)
         {
             var affectation = await _affectationService.GetAffectationAsync(idMat, dateAffectation);
@@ -115,18 +83,10 @@ namespace WebApplication8.Controllers
             {
                 return NotFound();
             }
-            
+
             return View(affectation);
         }
 
-        // POST: HomeController1/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(string idMat, DateTime dateAffectation)
-        {
-            _affectationService.DeleteAffectation(idMat, dateAffectation);
-            return RedirectToAction(nameof(Index));
-        }
         public IActionResult Search(string searchTerm)
         {
             var affectations = _affectationService.SearchAffectations(searchTerm);
