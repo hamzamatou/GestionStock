@@ -94,7 +94,7 @@ namespace WebApplication8.Areas.Identity.Pages.Account
             Input = new InputModel
             {
                 Roles = _roleManager.Roles
-                    .Where(r => r.Name != "Admin") 
+                    .Where(r => r.Name != "Admin")
                     .Select(r => new SelectListItem
                     {
                         Value = r.Name,
@@ -107,64 +107,76 @@ namespace WebApplication8.Areas.Identity.Pages.Account
         {
             returnUrl = returnUrl ?? Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
             if (ModelState.IsValid)
             {
                 // Vérifier si l'utilisateur est un employé
-                var employe = _context.Employes.FirstOrDefault(e => e.Nom == Input.Nom && e.Prenom == Input.Prenom && e.Email == Input.Email);
-               /* if (employe == null)
-                {
-                    ModelState.AddModelError(string.Empty, "Aucun employé correspondant trouvé.");
-                    Input.Roles = _roleManager.Roles
-                        .Where(r => r.Name != "Admin")  // Exclusion du rôle "Admin"
-                        .Select(r => new SelectListItem
-                        {
-                            Value = r.Name,
-                            Text = r.Name
-                        }).ToList();
-                    return Page();
-                }
-                */
+                //  var employe = _context.Employes.FirstOrDefault(e => e.Nom == Input.Nom && e.Prenom == Input.Prenom && e.Email == Input.Email);
+
                 var user = new User
                 {
                     UserName = Input.Email,
                     Email = Input.Email,
                     nom = Input.Nom,
                     prenom = Input.Prenom,
-                   // PhoneNumber=employe.tel
+                    // PhoneNumber = employe?.tel
                 };
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
+
                 if (result.Succeeded)
                 {
-
                     // Assigner le rôle sélectionné à l'utilisateur
                     await _userManager.AddToRoleAsync(user, Input.SelectedRole);
-                    ModelState.AddModelError(string.Empty, "l'utilisateur est bien crée");
+
+                    // Générer le token de confirmation d'e-mail
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+
+                    // Créer l'URL de confirmation
                     var callbackUrl = Url.Page(
                         "/Account/ConfirmEmail",
                         pageHandler: null,
                         values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    _mail.Envoyer_Click(
-                        $"Votre Compte a été bien crée pour notre système de gestion des équipement informatique tu peux consulter l' admininstareur sytème pour obtenir vos corrodonnées de connexion  ","Gestionnaire Stock",Input.Email );
+                    try
+                    {
+                        // Envoyer l'e-mail avec le mot de passe
+                        _mail.Envoyer_Click(
+                            $"Votre compte a été créé avec succès pour notre système de gestion des équipements informatiques. Voici vos informations de connexion :<br><br>" +
+                            $"<strong>Login :</strong> {Input.Email}<br>" +
+                            $"<strong>Mot de passe :</strong> {Input.Password}<br><br>",
+                            "Création de compte - Gestionnaire Stock",
+                            Input.Email
+                        );
 
+                        _logger.LogInformation("E-mail de confirmation envoyé à {Email}", Input.Email);
+                        ModelState.AddModelError(string.Empty, "L'utilisateur a été créé avec succès. Un e-mail de confirmation a été envoyé.");
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "Erreur lors de l'envoi de l'e-mail de confirmation à {Email}", Input.Email);
+                        ModelState.AddModelError(string.Empty, "Une erreur s'est produite lors de l'envoi de l'e-mail de confirmation.");
+                    }
                 }
-                foreach (var error in result.Errors)
+                else
                 {
-                    ModelState.AddModelError(string.Empty, error.Description);
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
                 }
             }
 
-            // Si la validation échoue, réaffiche le formulaire avec les erreurs
+            // Si la validation échoue, réafficher le formulaire avec les erreurs
             Input.Roles = _roleManager.Roles
-               // .Where(r => r.Name != "Admin")  // Exclusion du rôle "Admin"
                 .Select(r => new SelectListItem
                 {
                     Value = r.NormalizedName,
                     Text = r.Name
                 }).ToList();
+
             return Page();
         }
     }
